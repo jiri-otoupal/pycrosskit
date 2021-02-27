@@ -3,7 +3,7 @@
 Create desktop shortcuts for Linux
 """
 import os
-import sys
+import stat
 
 from pycrosskit.shortcuts import Shortcut, UserFolders
 
@@ -14,9 +14,8 @@ DESKTOP_FORM = """[Desktop Entry]
 Name={name:s}
 Type=Application
 Comment={desc:s}
-Terminal={term:s}
 Icon={icon:s}
-Exec={exe:s} {script:s} {args:s}
+Exec={exe:s} {args:s}
 """
 
 _HOME = None
@@ -73,46 +72,36 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(script, name=None, description=None, icon=None,
-                    terminal=True, desktop=True,
-                    startmenu=True, executable=None):
-    """create shortcut
+def create_shortcut(script, name, description, icon,
+                    desktop, startmenu):
+    sh = Shortcut(name, script, description, icon, desktop, startmenu)
 
-    Arguments:
-    ---------
-    script      (str) path to script, may include command-line arguments
-    name        (str, None) name to display for shortcut [name of script]
-    description (str, None) longer description of script [`name`]
-    icon        (str, None) path to icon file [python icon]
-    folder      (str, None) subfolder of Desktop for shortcut [None] (See Note 1)
-    terminal    (bool) whether to run in a Terminal [True]
-    desktop     (bool) whether to add shortcut to Desktop [True]
-    startmenu   (bool) whether to add shortcut to Start Menu [True] (See Note 2)
-    executable  (str, None) name of executable to use [this Python] (see Note 3)
+    text = DESKTOP_FORM.format(name=sh.shortcut_name, desc=sh.description,
+                               exe=sh.exec_path, icon=sh.icon_path, args=sh.arguments)
 
-    Notes:
-    ------
-    1. `folder` will place shortcut in a subfolder of Desktop and/or Start Menu
-    2. Start Menu does not exist for Darwin / MacOSX
-    3. executable defaults to the Python executable used to make shortcut.
-    """
-    userfolders = get_folders()
-    scut = Shortcut(script, userfolders, name=name, description=description, icon=icon)
-
-    if executable is None:
-        executable = sys.executable
-    text = DESKTOP_FORM.format(name=scut.name, desc=scut.description,
-                               exe=executable, icon=scut.icon,
-                               script=scut.full_script, args=scut.arguments,
-                               term='true' if terminal else 'false')
-
-    for (create, folder) in ((desktop, scut.desktop_dir),
-                             (startmenu, scut.startmenu_dir)):
+    for (create, folder) in ((desktop, sh.desktop_path),
+                             (startmenu, sh.startmenu_path)):
         if create:
             if not os.path.exists(folder):
                 os.makedirs(folder)
-            dest = os.path.join(folder, scut.target)
+            dest = os.path.join(folder, sh.exec_path)
             with open(dest, 'w') as fout:
                 fout.write(text)
-            os.chmod(dest, 493)  ## = octal 755 / rwxr-xr-x
-    return scut
+            os.chmod(dest, stat.S_IWRITE)
+    return sh
+
+
+def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
+    user_folders = get_folders()
+    desktop_path, startmenu_path = "", ""
+    if startmenu:
+        startmenu_path = user_folders.startmenu + "/" + shortcut_name + scut_ext
+        if os.path.exists(startmenu_path):
+            os.chmod(startmenu_path, stat.S_IWRITE)
+            os.remove(startmenu_path)
+    if desktop:
+        desktop_path = user_folders.desktop + "/" + shortcut_name + scut_ext
+        if os.path.exists(desktop_path):
+            os.chmod(desktop_path, stat.S_IWRITE)
+            os.remove(desktop_path)
+    return desktop_path, startmenu_path

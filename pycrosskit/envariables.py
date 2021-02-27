@@ -23,12 +23,12 @@ class SysEnv:
             return value
 
     @staticmethod
-    def set_var(name, value, reg_path=default_reg_path):
+    def set_var(name, value, subkey="", reg_path=default_reg_path):
         try:
             root = ConnectRegistry(None, HKEY_CURRENT_USER)
             key = OpenKeyEx(root, reg_path, KEY_SET_VALUE)
             policy_key = CreateKey(key, name)
-            SetValueEx(policy_key, '', 0, REG_SZ, value)
+            SetValueEx(policy_key, subkey, 0, REG_SZ, value)
             root.Close()
         except OSError:
             os.system("echo 'export " + name + "=" + value + "' >> ~/.bashrc ")

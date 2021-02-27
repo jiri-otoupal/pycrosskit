@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pycrosskit.shortcuts import Shortcut
+from build.lib.pycrosskit.shortcuts import Shortcut
 
 
 class Test_Shortcuts(unittest.TestCase):
