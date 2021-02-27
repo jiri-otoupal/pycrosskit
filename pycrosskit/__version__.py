@@ -7,7 +7,7 @@ Information about the current version of the py-package-template package.
 
 __title__ = 'pycrosskit'
 __description__ = 'pycrosskit Cross Platform Toolkit for Windows and Linux variables and shortcuts'
-__version__ = '0.2.0'
+__version__ = '0.9.1'
 __author__ = 'Jiri Otoupal'
 __author_email__ = 'jiri-otoupal@ips-database.eu'
 __license__ = 'Apache 2.0'
