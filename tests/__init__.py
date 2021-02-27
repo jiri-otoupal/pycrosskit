@@ -2,5 +2,5 @@
 tests
 ~~~~~
 
-Test suite for the bin package.
+Test suite for the pycrosskit package.
 """

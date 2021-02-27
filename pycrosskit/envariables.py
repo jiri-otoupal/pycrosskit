@@ -3,7 +3,7 @@ from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKeyEx, CreateKey, REG
     DeleteKey, QueryValueEx
 
 
-class EnvVar:
+class SysEnv:
     default_reg_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
 
     @staticmethod
