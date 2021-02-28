@@ -4,13 +4,11 @@ Create desktop shortcuts for Windows
 """
 import os
 import stat
-import sys
-import time
 
 import win32com.client
 from win32comext.shell import shell, shellcon
 
-from pycrosskit.shortcuts import Shortcut, UserFolders
+from pycrosskit.shortcuts import UserFolders
 
 scut_ext = '.lnk'
 ico_ext = ('ico',)
@@ -49,12 +47,12 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance, startmenu: bool = False, desktop: bool = False):
+def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
     """
-
+    Creates Shortcut
     :param shortcut_instance: Shortcut Object
-    :param startmenu: Want to create Startmenu Shortcut ?
-    :param desktop: Want to create Desktop Shortcut ?
+    :param startmenu: True to create Start Menu Shortcut
+    :param desktop: True to create Desktop Shortcut
     :return desktop_path, startmenu_path
     :rtype: str, str
     """
@@ -72,12 +70,12 @@ def create_shortcut(shortcut_instance, startmenu: bool = False, desktop: bool = 
     return desktop_path, startmenu_path
 
 
-def delete_shortcut(shortcut_name, startmenu: bool = False, desktop: bool = False):
+def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
     """
-
+    Deletes Shortcut
     :param shortcut_name: Shortcut Object
-    :param startmenu: Want to create Startmenu Shortcut ?
-    :param desktop: Want to create Desktop Shortcut ?
+    :param startmenu: True to create Start Menu Shortcut
+    :param desktop: True to create Desktop Shortcut
     :return desktop_path, startmenu_path
     :rtype: str, str
     """
@@ -97,6 +95,12 @@ def delete_shortcut(shortcut_name, startmenu: bool = False, desktop: bool = Fals
 
 
 def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
+    """
+    Shortcut secondary function
+    :param dest_path: Destination path for shortcut
+    :param shortcut_instance: Shortcut instance
+    :param user_folders: System folders
+    """
     wscript = _WSHELL.CreateShortCut(dest_path)
     wscript.Targetpath = shortcut_instance.exec_path
     wscript.Arguments = shortcut_instance.arguments

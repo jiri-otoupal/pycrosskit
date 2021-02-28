@@ -5,7 +5,7 @@ Create desktop shortcuts for Linux
 import os
 import stat
 
-from pycrosskit.shortcuts import Shortcut, UserFolders
+from pycrosskit.shortcuts import UserFolders
 
 scut_ext = 'desktop'
 ico_ext = ('ico', 'svg', 'png')
@@ -72,8 +72,16 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance: Shortcut,
+def create_shortcut(shortcut_instance,
                     desktop=False, startmenu=False):
+    """
+    Create Shortcut
+    :param shortcut_instance: Shortcut Instance
+    :param startmenu: True to create Start Menu Shortcut
+    :param desktop: True to create Desktop Shortcut
+    :return: desktop icon path, start menu path
+    :rtype: str, str
+    """
     text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
                                exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
                                args=shortcut_instance.arguments)
@@ -90,7 +98,15 @@ def create_shortcut(shortcut_instance: Shortcut,
     return user_folders.desktop, user_folders.startmenu
 
 
-def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
+def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
+    """
+    Delete Shortcut
+    :param shortcut_name: Name of Shortcut
+    :param startmenu: True to create Start Menu Shortcut
+    :param desktop: True to create Desktop Shortcut
+    :return: desktop icon path, start menu path
+    :rtype: str, str
+    """
     user_folders = get_folders()
     desktop_path, startmenu_path = "", ""
     if startmenu:
