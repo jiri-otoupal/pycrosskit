@@ -72,8 +72,8 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(script, name, description, icon,
-                    desktop, startmenu):
+def create_shortcut(script, name, description, icon="",
+                    desktop=False, startmenu=False):
     sh = Shortcut(name, script, description, icon, desktop, startmenu)
 
     text = DESKTOP_FORM.format(name=sh.shortcut_name, desc=sh.description,
