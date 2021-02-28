@@ -1,8 +1,4 @@
-ncsudo: required
-
 language: python
-
-sudo: false
 
 python:
   - "3.3"
@@ -13,8 +9,8 @@ python:
   - "3.9"
 
 os:
-  windows
-  linux
+  - windows
+  - linux
 
 install:
   - pip install -r requirements.txt
