@@ -1,5 +1,7 @@
 # Python Cross Platform Toolkit for Windows and Linux variables, shortcuts and start menu shortcuts
 
+## Simple Cross Platform creation of shortcuts and Persistent Environment Variables
+
 [![image](https://img.shields.io/pypi/v/pycrosskit.svg)](https://pypi.org/project/py-cross-kit/)
 [![Build Status](https://travis-ci.com/jiri-otoupal/py-cross-kit.svg?branch=master)](https://travis-ci.com/github/jiri-otoupal/py-cross-kit)
 
