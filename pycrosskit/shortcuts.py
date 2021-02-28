@@ -23,6 +23,13 @@ class Shortcut:
 
     @staticmethod
     def delete(shortcut_name, desktop: bool = False, start_menu: bool = False):
+        """
+        Delete Shortcut
+        :param shortcut_name: Name of shortcut
+        :param desktop: Delete Shortcut on Desktop
+        :param start_menu: Delete Shortcut on Start Menu
+        :return:
+        """
         if not Shortcut.get_platform(True):
             from pycrosskit.platforms.windows import delete_shortcut
         else:
