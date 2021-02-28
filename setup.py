@@ -26,8 +26,8 @@ setup(
     url=about['__url__'],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.7.*",
-    install_requires=['numpy', 'requests'],
+    python_requires=">=3.3.*",
+    install_requires=[""],
     license=about['__license__'],
     zip_safe=True,
     entry_points={
