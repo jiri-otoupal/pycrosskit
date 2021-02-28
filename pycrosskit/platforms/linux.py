@@ -77,9 +77,9 @@ def create_shortcut(shortcut_instance: Shortcut,
     text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
                                exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
                                args=shortcut_instance.arguments)
-
-    for (create, folder) in ((desktop, shortcut_instance.desktop_path),
-                             (startmenu, shortcut_instance.startmenu_path)):
+    user_folders = get_folders()
+    for (create, folder) in ((desktop, user_folders.desktop),
+                             (startmenu, user_folders.startmenu)):
         if create:
             if not os.path.exists(folder):
                 os.makedirs(folder)
