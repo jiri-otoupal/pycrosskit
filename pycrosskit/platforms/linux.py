@@ -74,22 +74,20 @@ def get_folders():
 
 def create_shortcut(shortcut_instance: Shortcut,
                     desktop=False, startmenu=False):
-    sh = Shortcut(shortcut_instance.shortcut_name, shortcut_instance.exec_path, shortcut_instance.description,
-                  shortcut_instance.icon_path, desktop, startmenu)
+    text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
+                               exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
+                               args=shortcut_instance.arguments)
 
-    text = DESKTOP_FORM.format(name=sh.shortcut_name, desc=sh.description,
-                               exe=sh.exec_path, icon=sh.icon_path, args=sh.arguments)
-
-    for (create, folder) in ((desktop, sh.desktop_path),
-                             (startmenu, sh.startmenu_path)):
+    for (create, folder) in ((desktop, shortcut_instance.desktop_path),
+                             (startmenu, shortcut_instance.startmenu_path)):
         if create:
             if not os.path.exists(folder):
                 os.makedirs(folder)
-            dest = os.path.join(folder, sh.exec_path)
+            dest = os.path.join(folder, shortcut_instance.exec_path)
             with open(dest, 'w') as fout:
                 fout.write(text)
             os.chmod(dest, stat.S_IWRITE)
-    return sh
+    return shortcut_instance
 
 
 def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
