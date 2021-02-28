@@ -87,7 +87,7 @@ def create_shortcut(shortcut_instance: Shortcut,
             with open(dest, 'w') as fout:
                 fout.write(text)
             os.chmod(dest, stat.S_IWRITE)
-    return shortcut_instance
+    return user_folders.desktop, user_folders.startmenu
 
 
 def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
