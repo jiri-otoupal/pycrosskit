@@ -4,12 +4,6 @@ language: python
 
 sudo: false
 
-env:
-  - MC_PYTHON=3.6
-  - MC_PYTHON=3.7
-  - MC_PYTHON=3.8
-  - MC_PYTHON=3.9
-
 python:
   - "2.7"
   - "3.3"
