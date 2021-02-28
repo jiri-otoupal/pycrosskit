@@ -14,7 +14,6 @@ os:
 
 install:
   - pip install -r requirements.txt
-  - pip install .
 
 script:
   - pipenv run pytest
