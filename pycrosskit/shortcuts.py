@@ -47,7 +47,7 @@ class Shortcut:
         return delete_shortcut(shortcut_name, desktop, start_menu)
 
     @staticmethod
-    def get_platform(boolean: bool = False) -> str or bool:
+    def get_platform(boolean=False) -> str or bool:
         """
         Returns current Platform
         :param boolean: Get system in boolean ( Linux is True, Windows is False )
