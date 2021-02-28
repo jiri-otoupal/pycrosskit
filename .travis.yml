@@ -10,6 +10,7 @@ python:
 
 os:
   - linux
+  - windows
 
 install:
   - pip install -r requirements.txt
