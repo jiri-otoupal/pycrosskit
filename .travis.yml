@@ -1,0 +1,39 @@
+ncsudo: required
+
+language: python
+
+sudo: false
+
+env:
+  - MC_PYTHON=3.6
+  - MC_PYTHON=3.7
+  - MC_PYTHON=3.8
+  - MC_PYTHON=3.9
+
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.9"
+
+os:
+  windows
+  linux
+
+install:
+  - pip install -r requirements.txt
+  - pip install .
+
+script:
+  - pipenv run pytest
+
+deploy:
+  provider: pypi
+  user: opaka
+  password:
+    secure: pypi-AgEIcHlwaS5vcmcCJDI0N2MyYmFkLTk3NGMtNGYzNS1hNTFlLWNhMjkyYmZhNmMwNgACJXsicGVybWlzc2lvbnMiOiAidXNlciIsICJ2ZXJzaW9uIjogMX0AAAYgSOMZhC82mn0DRBb5iNZvKIlnwe4CbKK4p5Ff992rMxw
+  on:
+    tags: true
