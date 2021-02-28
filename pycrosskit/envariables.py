@@ -1,6 +1,4 @@
 import os
-from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKeyEx, CreateKey, REG_SZ, SetValueEx, KEY_SET_VALUE, \
-    DeleteKey, QueryValueEx
 
 from pycrosskit.shortcuts import Shortcut
 
@@ -19,11 +17,12 @@ class SysEnv:
         :rtype: str
         """
         if Shortcut.get_platform() == "win":
-            root = ConnectRegistry(None, HKEY_CURRENT_USER)
-            policy_key = OpenKeyEx(root, reg_path)
-            value, type_ = QueryValueEx(policy_key, name)
+            import winreg
+            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            policy_key = winreg.OpenKeyEx(root, reg_path)
+            value, type_ = winreg.QueryValueEx(policy_key, name)
             if delete:
-                DeleteKey(policy_key, name)
+                winreg.DeleteKey(policy_key, name)
             root.Close()
             return value
         else:
@@ -42,10 +41,11 @@ class SysEnv:
         :param reg_path: Register path for windows
         """
         if Shortcut.get_platform() == "win":
-            root = ConnectRegistry(None, HKEY_CURRENT_USER)
-            key = OpenKeyEx(root, reg_path, KEY_SET_VALUE)
-            policy_key = CreateKey(key, name)
-            SetValueEx(policy_key, subkey, 0, REG_SZ, value)
+            import winreg
+            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            key = winreg.OpenKeyEx(root, reg_path, winreg.KEY_SET_VALUE)
+            policy_key = winreg.CreateKey(key, name)
+            winreg.SetValueEx(policy_key, subkey, 0, winreg.REG_SZ, value)
             root.Close()
         else:
             os.system("echo 'export " + name + "=" + value + "' >> ~/.bashrc ")
