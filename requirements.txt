@@ -1,1 +1,0 @@
-setuptools~=53.1.0
