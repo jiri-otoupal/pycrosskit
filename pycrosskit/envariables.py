@@ -20,7 +20,7 @@ class SysEnv:
             import winreg
             root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
             policy_key = winreg.OpenKeyEx(root, reg_path)
-            value, type_ = winreg.QueryValueEx(policy_key, name)
+            value = winreg.QueryValue(policy_key, name)
             if delete:
                 winreg.DeleteKey(policy_key, name)
             root.Close()
