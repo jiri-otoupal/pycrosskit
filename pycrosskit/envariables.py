@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from pycrosskit.shortcuts import Shortcut
 
@@ -26,7 +27,7 @@ class SysEnv:
             root.Close()
             return value
         else:
-            value = os.getenv(name)
+            value = subprocess.check_output(["echo $" + name])
             if delete:
                 os.system("unset " + name)
             return value
