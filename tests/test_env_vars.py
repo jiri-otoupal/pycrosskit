@@ -21,9 +21,8 @@ class TestEnvVars(unittest.TestCase):
         try:
             SysEnv.get_var("test")
             self.fail()
-        except FileNotFoundError or AssertionError:
+        except (FileNotFoundError, AssertionError):
             pass
-
 
 
 if __name__ == '__main__':
