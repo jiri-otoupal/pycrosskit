@@ -27,7 +27,7 @@ class SysEnv:
             root.Close()
             return value
         else:
-            value = str(subprocess.check_output(["echo", "$" + name])[1:-1])
+            value = subprocess.check_output(["echo", "$" + name])[1:-1].decode("utf-8")
             if delete:
                 os.system("unset " + name)
             return value
