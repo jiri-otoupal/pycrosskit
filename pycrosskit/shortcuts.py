@@ -9,7 +9,7 @@ class Shortcut:
 
     def __init__(self, shortcut_name, exec_path, description="", icon_path="",
                  desktop=False,
-                 start_menu=False):
+                 start_menu=False, work_dir=os.getcwd()):
         """
 
         :param shortcut_name: Name of Shortcut that will be created
@@ -24,6 +24,7 @@ class Shortcut:
         self.shortcut_name = shortcut_name
         self.description = description
         self.icon_path = icon_path
+        self.work_path = work_dir
         if not self.get_platform(True):
             from pycrosskit.platforms.windows import create_shortcut
         else:

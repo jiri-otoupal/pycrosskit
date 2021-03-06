@@ -104,7 +104,7 @@ def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
     wscript = _WSHELL.CreateShortCut(dest_path)
     wscript.Targetpath = shortcut_instance.exec_path
     wscript.Arguments = shortcut_instance.arguments
-    wscript.WorkingDirectory = user_folders.home
+    wscript.WorkingDirectory = shortcut_instance.work_path
     wscript.WindowStyle = 0
     wscript.Description = shortcut_instance.description
     if os.path.exists(shortcut_instance.icon_path):
