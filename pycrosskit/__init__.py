@@ -5,7 +5,7 @@ pycrosskit
 The pycrosskit package - a Python package that makes Shortcuts and Environment Variables Easy
 """
 
-#### Shortcuts usage:
+# Shortcuts usage:
 
 
 # Will Create shortcut
