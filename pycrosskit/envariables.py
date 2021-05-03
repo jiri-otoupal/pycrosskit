@@ -5,10 +5,9 @@ from pycrosskit.shortcuts import Shortcut
 
 
 class SysEnv:
-    default_reg_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
 
     @staticmethod
-    def get_var(name, reg_path=default_reg_path, delete=False):
+    def get_var(name, reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", delete=False):
         """
         Get Environment Variable
         :param name: Variable Name
@@ -33,7 +32,7 @@ class SysEnv:
             return value
 
     @staticmethod
-    def set_var(name, value, subkey="", reg_path=default_reg_path):
+    def set_var(name, value, subkey="", reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"):
         """
         Set Environment Variable
         :param name: Variable Name
