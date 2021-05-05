@@ -13,14 +13,19 @@ class SysEnv:
         :param name: Variable Name
         :param reg_path: Register path for windows
         :param delete: Delete after read
-        :return: Value from variable
-        :rtype: str
+        :return: Value from variable or None if failed
+        :rtype: str or None
         """
         if Shortcut.get_platform() == "win":
             import winreg
             root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
             policy_key = winreg.OpenKeyEx(root, reg_path)
-            value = winreg.QueryValue(policy_key, name)
+            try:
+                value = winreg.QueryValue(policy_key, name)
+            except FileNotFoundError:
+                print("This Registry Path does not exists on this system")
+                print("Please check path in regedit.exe")
+                return None
             if delete:
                 winreg.DeleteKey(policy_key, name)
             root.Close()
@@ -44,8 +49,12 @@ class SysEnv:
             import winreg
             root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
             key = winreg.OpenKeyEx(root, reg_path, winreg.KEY_SET_VALUE)
-            policy_key = winreg.CreateKey(key, name)
-            winreg.SetValueEx(policy_key, subkey, 0, winreg.REG_SZ, value)
-            root.Close()
+            try:
+                policy_key = winreg.CreateKey(key, name)
+                winreg.SetValueEx(policy_key, subkey, 0, winreg.REG_SZ, value)
+                root.Close()
+            except PermissionError:
+                print("Python does not have permission to modify registry")
+                return
         else:
             os.system("echo 'export " + name + "=" + value + "' >> ~/.bashrc ")
