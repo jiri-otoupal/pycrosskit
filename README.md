@@ -4,6 +4,7 @@
 
 [![image](https://img.shields.io/pypi/v/pycrosskit.svg)](https://pypi.org/project/py-cross-kit/)
 [![Build Status](https://travis-ci.com/jiri-otoupal/pycrosskit.svg?branch=master)](https://travis-ci.com/github/jiri-otoupal/pycrosskit)
+[![Downloads](https://pepy.tech/badge/pycrosskit)](https://pepy.tech/project/pycrosskit)
 
 ## Installing
 
