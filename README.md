@@ -56,7 +56,7 @@ SysEnv.get_var(name, reg_path=default_reg_path, delete=False)
 
 ```
 <hr>
-Did I make your life less painfull ? 
+Did I made your life less painfull ? 
 <br>
 <br>
 Support my coffee addiction ;)
