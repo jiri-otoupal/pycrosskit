@@ -20,22 +20,31 @@ class SysEnv:
         """
         if Shortcut.get_platform() == "win":
             import winreg
-            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-            policy_key = winreg.OpenKeyEx(root, reg_path)
-            try:
-                value = winreg.QueryValue(policy_key, name)
-            except FileNotFoundError:
-                print("This Registry Path does not exists on this system")
-                print("Please check path in regedit.exe")
-                return None
+            if registry:
+                root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+                policy_key = winreg.OpenKeyEx(root, reg_path)
+                try:
+                    value = winreg.QueryValue(policy_key, str(name))
+                except FileNotFoundError:
+                    print("This Registry Path does not exists on this system")
+                    print("Please check path in regedit.exe")
+                    return None
+            else:
+                value = str(subprocess.check_output("echo %" + name + "%", shell=True), "utf-8").replace("\r\n", "")
             if delete:
-                winreg.DeleteKey(policy_key, name)
-            root.Close()
+                if not registry:
+                    err = os.system("REG delete HKCU\Environment /F /V " + str(name))
+                    if err != 0:
+                        raise FileNotFoundError("Environment Variable not found")
+                else:
+                    winreg.DeleteKey(policy_key, str(name))
+            if registry:
+                root.Close()
             return value
         else:
-            value = subprocess.check_output(["echo", "$" + name])[1:-1].decode("utf-8")
+            value = subprocess.check_output(["echo", "$" + str(name)])[1:-1].decode("utf-8")
             if delete:
-                os.system("unset " + name)
+                os.system("unset " + str(name))
             return value
 
     @staticmethod
