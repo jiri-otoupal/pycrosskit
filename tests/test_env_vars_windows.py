@@ -1,6 +1,7 @@
 import unittest
 
 from pycrosskit.envariables import SysEnv
+from pycrosskit.shortcuts import Shortcut
 
 
 class WindowsVarsTest(unittest.TestCase):
@@ -25,4 +26,5 @@ class WindowsVarsTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if Shortcut.get_platform() == "win":
+        unittest.main()
