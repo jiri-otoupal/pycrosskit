@@ -7,8 +7,8 @@ from pycrosskit.shortcuts import Shortcut
 class SysEnv:
 
     @staticmethod
-    def get_var(name: str, reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", delete: bool = False,
-                registry: bool = True):
+    def get_var(name, reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", delete=False,
+                registry=True):
         """
         Get Environment Variable
         :param name: Variable Name

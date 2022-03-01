@@ -1,18 +1,16 @@
 import os
 import sys
 from collections import namedtuple
-from pathlib import Path
-from typing import Union
 
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
 
 class Shortcut:
 
-    def __init__(self, shortcut_name: str, exec_path: Union[os.PathLike, Path], description: str = "",
-                 icon_path: Union[os.PathLike, Path] = "",
-                 desktop: bool = False,
-                 start_menu: bool = False, work_dir: Union[os.PathLike, Path] = os.getcwd()):
+    def __init__(self, shortcut_name, exec_path, description="",
+                 icon_path="",
+                 desktop=False,
+                 start_menu=False, work_dir=os.getcwd()):
         """
 
         :param shortcut_name: Name of Shortcut that will be created
@@ -35,7 +33,7 @@ class Shortcut:
         self.desktop_path, self.startmenu_path = create_shortcut(self, start_menu, desktop)
 
     @staticmethod
-    def delete(shortcut_name: str, desktop: bool = False, start_menu: bool = False):
+    def delete(shortcut_name, desktop=False, start_menu=False):
         """
         Delete Shortcut
         :param shortcut_name: Name of shortcut
@@ -51,7 +49,7 @@ class Shortcut:
         return delete_shortcut(shortcut_name, desktop, start_menu)
 
     @staticmethod
-    def get_platform(is_linux: bool = False) -> Union[bool, str]:
+    def get_platform(is_linux=False):
         """
         Returns current Platform
         :param is_linux: Get system in boolean ( Linux is True, Windows is False )

@@ -4,9 +4,7 @@ Create desktop shortcuts for Linux
 """
 import os
 import stat
-from os import PathLike
 from pathlib import Path
-from typing import Union, Any
 
 from pycrosskit.shortcuts import UserFolders
 
@@ -24,7 +22,7 @@ Exec={exe:s} {args:s}
 _HOME = None
 
 
-def get_homedir() -> str:
+def get_homedir():
     """determine home directory of current user"""
     global _HOME
     if _HOME is not None:
@@ -45,7 +43,7 @@ def get_homedir() -> str:
     return home
 
 
-def get_desktop() -> os.PathLike:
+def get_desktop():
     """get desktop location"""
     homedir = get_homedir()
     desktop = os.path.join(homedir, 'Desktop')
@@ -65,7 +63,7 @@ def get_desktop() -> os.PathLike:
     return desktop
 
 
-def get_startmenu() -> str:
+def get_startmenu():
     """get start menu location"""
     homedir = get_homedir()
     return os.path.join(homedir, '.local', 'share', 'applications')
@@ -76,7 +74,7 @@ def get_folders():
 
 
 def create_shortcut(shortcut_instance,
-                    desktop: bool = False, startmenu: bool = False) -> tuple[PathLike, str]:
+                    desktop=False, startmenu=False):
     """
     Create Shortcut
     :param shortcut_instance: Shortcut Instance
@@ -102,8 +100,7 @@ def create_shortcut(shortcut_instance,
     return user_folders.desktop, user_folders.startmenu
 
 
-def delete_shortcut(shortcut_name: str, desktop: bool = False, startmenu: bool = False) -> tuple[
-    Union[str, Any], Union[str, Any]]:
+def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
     """
     Delete Shortcut
     :param shortcut_name: Name of Shortcut
