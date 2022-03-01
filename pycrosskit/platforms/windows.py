@@ -4,6 +4,7 @@ Create desktop shortcuts for Windows
 """
 import os
 import stat
+from pathlib import Path
 
 import win32com.client
 from win32comext.shell import shell, shellcon
@@ -47,7 +48,7 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
+def create_shortcut(shortcut_instance, startmenu: bool = False, desktop: bool = False):
     """
     Creates Shortcut
     :param shortcut_instance: Shortcut Object
@@ -60,17 +61,17 @@ def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
     desktop_path, startmenu_path = None, None
 
     if startmenu:
-        startmenu_path = user_folders.startmenu + "/" + shortcut_instance.shortcut_name + scut_ext
+        startmenu_path = str(Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext))
         _wscript_shortcut(startmenu_path, shortcut_instance,
                           user_folders)
     if desktop:
-        desktop_path = user_folders.desktop + "/" + shortcut_instance.shortcut_name + scut_ext
+        desktop_path = str(Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext))
         _wscript_shortcut(desktop_path, shortcut_instance,
                           user_folders)
     return desktop_path, startmenu_path
 
 
-def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
+def delete_shortcut(shortcut_name: str, startmenu: bool = False, desktop: bool = False):
     """
     Deletes Shortcut
     :param shortcut_name: Shortcut Object
@@ -82,19 +83,19 @@ def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
     user_folders = get_folders()
     desktop_path, startmenu_path = "", ""
     if startmenu:
-        startmenu_path = user_folders.startmenu + "/" + shortcut_name + scut_ext
+        startmenu_path = str(Path(user_folders.startmenu) / (shortcut_name + scut_ext))
         if os.path.exists(startmenu_path):
             os.chmod(startmenu_path, stat.S_IWRITE)
             os.remove(startmenu_path)
     if desktop:
-        desktop_path = user_folders.desktop + "/" + shortcut_name + scut_ext
+        desktop_path = str(Path(user_folders.desktop) / (shortcut_name + scut_ext))
         if os.path.exists(desktop_path):
             os.chmod(desktop_path, stat.S_IWRITE)
             os.remove(desktop_path)
     return desktop_path, startmenu_path
 
 
-def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
+def _wscript_shortcut(dest_path: str, shortcut_instance, user_folders):
     """
     Shortcut secondary function
     :param dest_path: Destination path for shortcut

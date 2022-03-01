@@ -7,7 +7,8 @@ from pycrosskit.shortcuts import Shortcut
 class SysEnv:
 
     @staticmethod
-    def get_var(name, reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", delete=False, registry=True):
+    def get_var(name: str, reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", delete: bool = False,
+                registry: bool = True):
         """
         Get Environment Variable
         :param name: Variable Name
@@ -18,6 +19,8 @@ class SysEnv:
         :return: Value from variable or None if failed
         :rtype: str or None
         """
+        root = None
+        policy_key = None
         if Shortcut.get_platform() == "win":
             import winreg
             if registry:
@@ -30,7 +33,9 @@ class SysEnv:
                     print("Please check path in regedit.exe")
                     return None
             else:
-                value = str(subprocess.check_output("echo %" + name + "%", shell=True), "utf-8").replace("\r\n", "")
+                value = str(subprocess.check_output("echo %" + name + "%", shell=True), "utf-8").replace("\r\n",
+                                                                                                         "").replace(
+                    "%", "")
             if delete:
                 if not registry:
                     err = os.system("REG delete HKCU\Environment /F /V " + str(name))
@@ -38,7 +43,7 @@ class SysEnv:
                         raise FileNotFoundError("Environment Variable not found")
                 else:
                     winreg.DeleteKey(policy_key, str(name))
-            if registry:
+            if registry and root is not None:
                 root.Close()
             return value
         else:
@@ -48,7 +53,9 @@ class SysEnv:
             return value
 
     @staticmethod
-    def set_var(name, value, subkey="", reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", registry=True):
+    def set_var(name: str, value: str, subkey: str = "",
+                reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                registry: bool = True):
         """
         Set Environment Variable
         :param name: Variable Name

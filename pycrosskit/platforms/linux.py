@@ -4,10 +4,13 @@ Create desktop shortcuts for Linux
 """
 import os
 import stat
+from os import PathLike
+from pathlib import Path
+from typing import Union, Any
 
 from pycrosskit.shortcuts import UserFolders
 
-scut_ext = 'desktop'
+scut_ext = '.desktop'
 ico_ext = ('ico', 'svg', 'png')
 
 DESKTOP_FORM = """[Desktop Entry]
@@ -21,7 +24,7 @@ Exec={exe:s} {args:s}
 _HOME = None
 
 
-def get_homedir():
+def get_homedir() -> str:
     """determine home directory of current user"""
     global _HOME
     if _HOME is not None:
@@ -42,7 +45,7 @@ def get_homedir():
     return home
 
 
-def get_desktop():
+def get_desktop() -> os.PathLike:
     """get desktop location"""
     homedir = get_homedir()
     desktop = os.path.join(homedir, 'Desktop')
@@ -62,7 +65,7 @@ def get_desktop():
     return desktop
 
 
-def get_startmenu():
+def get_startmenu() -> str:
     """get start menu location"""
     homedir = get_homedir()
     return os.path.join(homedir, '.local', 'share', 'applications')
@@ -73,7 +76,7 @@ def get_folders():
 
 
 def create_shortcut(shortcut_instance,
-                    desktop=False, startmenu=False):
+                    desktop: bool = False, startmenu: bool = False) -> tuple[PathLike, str]:
     """
     Create Shortcut
     :param shortcut_instance: Shortcut Instance
@@ -91,14 +94,16 @@ def create_shortcut(shortcut_instance,
         if create:
             if not os.path.exists(folder):
                 os.makedirs(folder)
-            dest = os.path.join(folder, shortcut_instance.exec_path)
-            with open(dest, 'w') as fout:
-                fout.write(text)
+            dest = str(Path(folder) / (shortcut_instance.shortcut_name + scut_ext))
+            with open(dest, 'w') as f_out:
+                f_out.write(text)
             os.chmod(dest, stat.S_IWRITE)
+
     return user_folders.desktop, user_folders.startmenu
 
 
-def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
+def delete_shortcut(shortcut_name: str, desktop: bool = False, startmenu: bool = False) -> tuple[
+    Union[str, Any], Union[str, Any]]:
     """
     Delete Shortcut
     :param shortcut_name: Name of Shortcut

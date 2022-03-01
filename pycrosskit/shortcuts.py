@@ -1,15 +1,18 @@
 import os
 import sys
 from collections import namedtuple
+from pathlib import Path
+from typing import Union
 
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
 
 class Shortcut:
 
-    def __init__(self, shortcut_name, exec_path, description="", icon_path="",
-                 desktop=False,
-                 start_menu=False, work_dir=os.getcwd()):
+    def __init__(self, shortcut_name: str, exec_path: Union[os.PathLike, Path], description: str = "",
+                 icon_path: Union[os.PathLike, Path] = "",
+                 desktop: bool = False,
+                 start_menu: bool = False, work_dir: Union[os.PathLike, Path] = os.getcwd()):
         """
 
         :param shortcut_name: Name of Shortcut that will be created
@@ -19,12 +22,12 @@ class Shortcut:
         :param desktop: True to Generate Desktop Shortcut
         :param start_menu: True to Generate Start Menu Shortcut
         """
-        self.exec_path = exec_path
+        self.exec_path = str(exec_path)
         self.arguments = "".join(exec_path.split(" ")[1:])
         self.shortcut_name = shortcut_name
         self.description = description
-        self.icon_path = icon_path
-        self.work_path = work_dir
+        self.icon_path = str(icon_path)
+        self.work_path = str(work_dir)
         if not self.get_platform(True):
             from pycrosskit.platforms.windows import create_shortcut
         else:
@@ -32,7 +35,7 @@ class Shortcut:
         self.desktop_path, self.startmenu_path = create_shortcut(self, start_menu, desktop)
 
     @staticmethod
-    def delete(shortcut_name, desktop=False, start_menu=False):
+    def delete(shortcut_name: str, desktop: bool = False, start_menu: bool = False):
         """
         Delete Shortcut
         :param shortcut_name: Name of shortcut
@@ -48,10 +51,10 @@ class Shortcut:
         return delete_shortcut(shortcut_name, desktop, start_menu)
 
     @staticmethod
-    def get_platform(boolean=False):
+    def get_platform(is_linux: bool = False) -> Union[bool, str]:
         """
         Returns current Platform
-        :param boolean: Get system in boolean ( Linux is True, Windows is False )
+        :param is_linux: Get system in boolean ( Linux is True, Windows is False )
         :return platform as string or bool
         :rtype str or bool
         """
@@ -60,7 +63,7 @@ class Shortcut:
             platform = "win"
         if platform == "linux2":
             platform = "linux"
-        if boolean:
+        if is_linux:
             return platform == "linux"
         else:
             return platform
