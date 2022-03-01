@@ -53,9 +53,9 @@ class SysEnv:
             return value
 
     @staticmethod
-    def set_var(name: str, value: str, subkey: str = "",
-                reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-                registry: bool = True):
+    def set_var(name, value, subkey="",
+                reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                registry=True):
         """
         Set Environment Variable
         :param name: Variable Name

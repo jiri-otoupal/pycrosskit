@@ -48,7 +48,7 @@ def get_folders():
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance, startmenu: bool = False, desktop: bool = False):
+def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
     """
     Creates Shortcut
     :param shortcut_instance: Shortcut Object
@@ -71,7 +71,7 @@ def create_shortcut(shortcut_instance, startmenu: bool = False, desktop: bool = 
     return desktop_path, startmenu_path
 
 
-def delete_shortcut(shortcut_name: str, startmenu: bool = False, desktop: bool = False):
+def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
     """
     Deletes Shortcut
     :param shortcut_name: Shortcut Object
@@ -95,7 +95,7 @@ def delete_shortcut(shortcut_name: str, startmenu: bool = False, desktop: bool =
     return desktop_path, startmenu_path
 
 
-def _wscript_shortcut(dest_path: str, shortcut_instance, user_folders):
+def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
     """
     Shortcut secondary function
     :param dest_path: Destination path for shortcut
