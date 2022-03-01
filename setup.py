@@ -27,7 +27,7 @@ setup(
     url=about['__url__'],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=2.7.*",
+    python_requires=">=3.4.*",
     install_requires=[""],
     license=about['__license__'],
     zip_safe=True,
