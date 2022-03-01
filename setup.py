@@ -1,6 +1,7 @@
 #!/usr/pycrosskit/env python3
 
 import os
+
 from setuptools import setup, find_packages
 
 # get key package details from pycrosskit/__version__.py
@@ -26,7 +27,7 @@ setup(
     url=about['__url__'],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=2.7.*",
+    python_requires=">=3.9.*",
     install_requires=[""],
     license=about['__license__'],
     zip_safe=True,
