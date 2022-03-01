@@ -45,13 +45,15 @@ Shortcut.delete(shortcut_name, desktop, start_menu)
 ```python
 # Will Set Persistent Value for Variable in System
 # * subkey works only for windows like file in folder
-# * reg_path works only for windows as register path 
-SysEnv.set_var(name, value, subkey, reg_path=default_reg_path)
+# * reg_path works only for windows as register path (is ignored if registry=False) 
+# * registry works only for windows, if is False variable is saved to User Envirnoment Variables
+SysEnv.set_var(name, value, subkey, reg_path=default_reg_path, registry=True)
 
 # Will Get Persistent Value for Variable in System
 # * reg_path works only for windows as register path
 # * delete, deletes key from environment and its subkeys after read
-SysEnv.get_var(name, reg_path=default_reg_path, delete=False)
+# * registry works only for windows, if is False variable is obrained from User Envirnoment Variables
+SysEnv.get_var(name, reg_path=default_reg_path, delete=False, registry=True)
 
 
 ```
