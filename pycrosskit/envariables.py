@@ -80,4 +80,5 @@ class SysEnv:
             else:
                 os.system("setx " + str(name) + " " + str(value))
         else:
+            os.system("export " + str(name) + "=" + str(value))
             os.system("echo 'export " + str(name) + "=" + str(value) + "' >> ~/.bashrc ")
