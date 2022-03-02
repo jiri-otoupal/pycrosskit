@@ -1,6 +1,5 @@
 import os
 import subprocess
-import winreg
 
 from pycrosskit.shortcuts import Shortcut
 
@@ -56,7 +55,7 @@ class SysEnv:
     @staticmethod
     def set_var(name, value, subkey="",
                 reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-                registry=True, storage=winreg.HKEY_CURRENT_USER):
+                registry=True):
         """
         Set Environment Variable
         :param storage:
@@ -70,7 +69,7 @@ class SysEnv:
         if Shortcut.get_platform() == "win":
             if registry:
                 import winreg
-                root = winreg.ConnectRegistry(None, storage)
+                root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
                 key = winreg.OpenKeyEx(root, reg_path, winreg.KEY_SET_VALUE)
                 try:
                     policy_key = winreg.CreateKey(key, name)
