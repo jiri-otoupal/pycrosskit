@@ -12,10 +12,12 @@ scut_ext = '.desktop'
 ico_ext = ('ico', 'svg', 'png')
 
 DESKTOP_FORM = """[Desktop Entry]
+Version=1.0
 Name={name:s}
 Type=Application
 Comment={desc:s}
 Icon={icon:s}
+Terminal=false
 Exec={exe:s} {args:s}
 """
 
@@ -83,9 +85,15 @@ def create_shortcut(shortcut_instance,
     :return: desktop icon path, start menu path
     :rtype: str, str
     """
-    text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
-                               exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
-                               args=shortcut_instance.arguments)
+    if shortcut_instance.work_path is None:
+        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
+                                   exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
+                                   args=shortcut_instance.arguments)
+    else:
+        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
+                                   exe=f"bash -c 'cd {shortcut_instance.work_path} && {shortcut_instance.exec_path}'",
+                                   icon=shortcut_instance.icon_path,
+                                   args=shortcut_instance.arguments)
     user_folders = get_folders()
     for (create, folder) in ((desktop, user_folders.desktop),
                              (startmenu, user_folders.startmenu)):
@@ -95,7 +103,8 @@ def create_shortcut(shortcut_instance,
             dest = str(Path(folder) / (shortcut_instance.shortcut_name + scut_ext))
             with open(dest, 'w') as f_out:
                 f_out.write(text)
-            os.chmod(dest, stat.S_IWRITE)
+            st = os.stat(dest)
+            os.chmod(dest, st.st_mode | stat.S_IEXEC)
 
     return user_folders.desktop, user_folders.startmenu
 

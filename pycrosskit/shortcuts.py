@@ -10,7 +10,7 @@ class Shortcut:
     def __init__(self, shortcut_name, exec_path, description="",
                  icon_path="",
                  desktop=False,
-                 start_menu=False, work_dir=os.getcwd()):
+                 start_menu=False, work_dir=None):
         """
 
         :param shortcut_name: Name of Shortcut that will be created
