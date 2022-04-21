@@ -55,7 +55,7 @@ class SysEnv:
             ], stderr=subprocess.DEVNULL).decode("utf-8")
 
             if delete:
-                os.system("unset " + str(name))
+                os.system(f"echo 'unset {name}' >> ~/.bashrc")
             return value
 
     @staticmethod
