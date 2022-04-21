@@ -47,11 +47,15 @@ class SysEnv:
                 root.Close()
             return value
         else:
-            value = subprocess.check_output(["echo", "$" + str(name)])[1:-1].decode("utf-8")
-            if not value:
-                value = subprocess.check_output(["echo", "$" + str(name)], shell=True)[1:-1].decode("utf-8")
+            value = subprocess.check_output([
+                "/usr/bin/env",
+                "bash",
+                "-ic",
+                f". ~/.bashrc && echo -n ${name}"
+            ], stderr=subprocess.DEVNULL).decode("utf-8")
+
             if delete:
-                os.system("unset " + str(name))
+                os.system(f"echo 'unset {name}' >> ~/.bashrc")
             return value
 
     @staticmethod
@@ -83,5 +87,4 @@ class SysEnv:
             else:
                 os.system("setx " + str(name) + " " + str(value))
         else:
-            os.system("export " + str(name) + "=" + str(value))
-            os.system("echo 'export " + str(name) + "=" + str(value) + "' >> ~/.bashrc ")
+            os.system(f"echo 'export {name}=\"{value}\"' >> ~/.bashrc")
