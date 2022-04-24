@@ -25,22 +25,22 @@ _WSHELL = win32com.client.Dispatch("Wscript.Shell")
 # see: https://docs.microsoft.com/en-us/windows/win32/shell/csidl
 
 def get_homedir():
-    '''Return home directory:
+    """Return home directory:
     note that we return CSIDL_PROFILE, not
     CSIDL_APPDATA, CSIDL_LOCAL_APPDATA,  or CSIDL_COMMON_APPDATA
-    '''
+    """
     return shell.SHGetFolderPath(0, shellcon.CSIDL_PROFILE, None, 0)
 
 
 def get_desktop():
-    '''Return user Desktop folder'''
+    """Return user Desktop folder"""
     return shell.SHGetFolderPath(0, shellcon.CSIDL_DESKTOP, None, 0)
 
 
 def get_startmenu():
-    '''Return user Start Menu Programs folder
+    """Return user Start Menu Programs folder
     note that we return CSIDL_PROGRAMS not CSIDL_COMMON_PROGRAMS
-    '''
+    """
     return shell.SHGetFolderPath(0, shellcon.CSIDL_PROGRAMS, None, 0)
 
 

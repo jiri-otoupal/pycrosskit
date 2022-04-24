@@ -2,7 +2,7 @@ import logging
 import os
 import subprocess
 import winreg
-from typing import Any, Union, Tuple
+from typing import Any, Union
 
 from pycrosskit.env_platforms.exceptions import VarNotFound
 
@@ -31,8 +31,7 @@ class WinVar:
         return value
 
     @classmethod
-    def __get_policy_key_readonly(cls, reg_path: str) -> \
-            Tuple[winreg.HKEYType, winreg.HKEY_CLASSES_ROOT]:
+    def __get_policy_key_readonly(cls, reg_path: str):
 
         root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
         policy_key = winreg.OpenKeyEx(root, reg_path)
@@ -113,7 +112,6 @@ class WinVar:
                 if false, variable is set to environment variables
         """
         if registry:
-            import winreg
             root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
             key_ex = winreg.OpenKeyEx(root, reg_path, winreg.KEY_SET_VALUE)
             try:

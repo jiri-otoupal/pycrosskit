@@ -32,7 +32,6 @@ def get_homedir():
 
     home = None
     try:
-        from pathlib import Path  # Py3.5+
         home = str(Path.home())
     except:
         pass
