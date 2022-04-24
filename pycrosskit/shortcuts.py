@@ -1,5 +1,4 @@
 import os
-import sys
 from collections import namedtuple
 
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
@@ -26,11 +25,12 @@ class Shortcut:
         self.description = description
         self.icon_path = str(icon_path)
         self.work_path = str(work_dir)
-        if not self.get_platform(True):
-            from pycrosskit.platforms.windows import create_shortcut
+        if os.name == "nt":
+            from pycrosskit.shortcut_platforms.windows import create_shortcut
         else:
-            from pycrosskit.platforms.linux import create_shortcut
-        self.desktop_path, self.startmenu_path = create_shortcut(self, start_menu, desktop)
+            from pycrosskit.shortcut_platforms.linux import create_shortcut
+        self.desktop_path, self.startmenu_path = create_shortcut(self, start_menu,
+                                                                 desktop)
 
     @staticmethod
     def delete(shortcut_name, desktop=False, start_menu=False):
@@ -42,26 +42,8 @@ class Shortcut:
         :return: desktop and startmenu path
         :rtype: str, str
         """
-        if not Shortcut.get_platform(True):
-            from pycrosskit.platforms.windows import delete_shortcut
-        else:
-            from pycrosskit.platforms.linux import delete_shortcut
-        return delete_shortcut(shortcut_name, desktop, start_menu)
-
-    @staticmethod
-    def get_platform(is_linux=False):
-        """
-        Returns current Platform
-        :param is_linux: Get system in boolean ( Linux is True, Windows is False )
-        :return platform as string or bool
-        :rtype str or bool
-        """
-        platform = sys.platform
         if os.name == "nt":
-            platform = "win"
-        if platform == "linux2":
-            platform = "linux"
-        if is_linux:
-            return platform == "linux"
+            from pycrosskit.shortcut_platforms.windows import delete_shortcut
         else:
-            return platform
+            from pycrosskit.shortcut_platforms.linux import delete_shortcut
+        return delete_shortcut(shortcut_name, desktop, start_menu)

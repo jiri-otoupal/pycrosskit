@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from pycrosskit.envariables import SysEnv
@@ -7,23 +8,25 @@ class TestEnvVars(unittest.TestCase):
 
     def test_set_var(self):
         try:
-            SysEnv.set_var("test", "test")
+            SysEnv().set("test", "test")
         except:
             self.fail("")
 
     def test_get_var(self):
-        SysEnv.set_var("test", "test")
-        self.assertEqual(SysEnv.get_var("test"), "test")
+        SysEnv().set("test", "test")
+        self.assertEqual(SysEnv().get("test"), "test")
 
     def test_get_rm_var(self):
-        SysEnv.set_var("test", "test")
-        self.assertEqual(SysEnv.get_var("test", delete=True), "test")
+        SysEnv().set("test", "test")
+        self.assertEqual(SysEnv().get("test"), "test")
+        SysEnv().unset("test")
         try:
-            SysEnv.get_var("test")
+            SysEnv().get("test")
             self.fail()
         except Exception:
             pass
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if os.name != "nt":
+        unittest.main()
