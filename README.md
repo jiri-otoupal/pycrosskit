@@ -32,13 +32,13 @@ from pycrosskit.shortcuts import Shortcut
 # * at Desktop if desktop is True 
 # * at Start Menu if start_menu is True
 
-Shortcut(shortcut_name, exec_path, description,
-         icon_path, desktop, start_menu)
+Shortcut(shortcut_name="My Spaghetti Shortcut", exec_path="/usr/bin/order_spaghetti", description="Such Yummy Spaghetti",
+         icon_path="/home/.../spaghetti.png", desktop=True, start_menu=True)
 
 # Will Delete shortcut
 # * at Desktop if desktop is True 
 # * at Start Menu if start_menu is True
-Shortcut.delete(shortcut_name, desktop, start_menu)
+Shortcut.delete(shortcut_name="My Spaghetti Shortcut", desktop=True, start_menu=True)
 
 ```
 
