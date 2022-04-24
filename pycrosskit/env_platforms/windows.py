@@ -2,16 +2,17 @@ import logging
 import os
 import subprocess
 import winreg
-from typing import Any, Union
+from typing import Any, Union, Tuple
 
 from pycrosskit.env_platforms.exceptions import VarNotFound
 
 
 class WinVar:
     logger = logging.getLogger("env_vars")
+    shell = "batch"
 
     @classmethod
-    def __get(cls, key: str, reg_path: str, registry: bool):
+    def __get(cls, key: str, reg_path: str, registry: bool) -> str:
         if registry:
             policy_key, root = cls.__get_policy_key_readonly(reg_path)
             try:
@@ -30,7 +31,9 @@ class WinVar:
         return value
 
     @classmethod
-    def __get_policy_key_readonly(cls, reg_path: str):
+    def __get_policy_key_readonly(cls, reg_path: str) -> \
+            Tuple[winreg.HKEYType, winreg.HKEY_CLASSES_ROOT]:
+
         root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
         policy_key = winreg.OpenKeyEx(root, reg_path)
         return policy_key, root
@@ -70,7 +73,7 @@ class WinVar:
     @classmethod
     def get(cls, key: str, default: Union[Any, VarNotFound] = VarNotFound,
             reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            registry: bool = True):
+            registry: bool = True) -> str:
         """
         Get Environment Variable
         :param default: Value returned if not found

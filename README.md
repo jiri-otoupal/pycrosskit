@@ -23,9 +23,11 @@ pip3 install pycrosskit
 * Linux
 * Windows
 
-#### Shortcuts usage:
+### Shortcuts usage:
 
 ```python
+from pycrosskit.shortcuts import Shortcut
+
 # Will Create shortcut 
 # * at Desktop if desktop is True 
 # * at Start Menu if start_menu is True
@@ -40,23 +42,53 @@ Shortcut.delete(shortcut_name, desktop, start_menu)
 
 ```
 
-#### Environment Variables usage:
+### Environment Variables usage:
+
+Accessing and write to environment variables is automatically handled based on your system Lin/Win SysEnv class is
+implemented as a singleton metaclass so don't be afraid about multiple instances
+
+**Support of Mac env variables on request**
 
 ```python
-# Will Set Persistent Value for Variable in System
-# * subkey works only for windows like file in folder
-# * reg_path works only for windows as register path (is ignored if registry=False) 
-# * registry works only for windows, if is False variable is saved to User Envirnoment Variables
-SysEnv.set(name, value, subkey, reg_path=default_reg_path, registry=True)
+from pycrosskit.envariables import SysEnv
+
+### ** Linux ** 
+
+# Will Set Persistent Value for Variable in Systems bashrc file or custom one that you can pass
+SysEnv().set(key="spaghetti", value="boloneys", shell_file="~/.zsh")
 
 # Will Get Persistent Value for Variable in System
 # * reg_path works only for windows as register path
-# * delete, deletes key from environment and its subkeys after read
-# * registry works only for windows, if is False variable is obrained from User Envirnoment Variables
-SysEnv.get(name, reg_path=default_reg_path, delete=False, registry=True)
+# * registry works only for windows, if is False variable is obtained from User Environment Variables
+SysEnv().get(key="spaghetti", shell_file="~/.zsh", shell="zsh")
+
+# Will unset variable from your environment or registry
+SysEnv().unset(key="spaghetti", shell_file="~/.zsh")
+
+# For not having to override argument shell_file or shell
+# This saves specs for every access, default arguments are ignored
+SysEnv.save_shell_specs(shell="zsh", shell_file="~/.zsh")
+
+### ** Windows **
+
+# Will Set Persistent Value for Variable in System
+# * subkey works only for windows like file in folder
+# * reg_path works only for windows as register path (is ignored if registry=False) 
+# * registry works only for windows, if is False variable is saved to User Environment Variables
+SysEnv().set(key="spaghetti", value="bologna", subkey="italian_food", reg_path="HKEY-...\\CustomPath",
+             registry=True | False)
+
+# Will Get Persistent Value for Variable in System
+# * reg_path works only for windows as register path
+# * registry works only for windows, if is False variable is obtained from User Environment Variables
+SysEnv().get(key="spaghetti", reg_path="HKEY-...\\CustomPath", registry=True | False)
+
+# Will unset variable from your environment or registry
+SysEnv().unset(key="spaghetti", registry=True | False)
 
 
 ```
+
 <hr>
 Did I made your life less painfull ? 
 <br>

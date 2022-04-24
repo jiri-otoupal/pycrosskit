@@ -18,8 +18,16 @@ class TestEnvVars(unittest.TestCase):
 
     def test_get_rm_var(self):
         SysEnv().set("test", "test")
+        with open("~/.bashrc", "r") as f:
+            lines = f.read(9999999)
+            self.assertTrue("export test=" in lines)
         self.assertEqual(SysEnv().get("test"), "test")
         SysEnv().unset("test")
+
+        with open("~/.bashrc", "r") as f:
+            lines = f.read(9999999)
+            self.assertFalse("export test=" in lines)
+
         try:
             SysEnv().get("test")
             self.fail()
