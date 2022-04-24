@@ -1,8 +1,9 @@
 import logging
 import os
 import subprocess
+from typing import Union, Any
 
-from pycrosskit.env_platforms.var_exceptions import VarNotFound
+from pycrosskit.env_platforms.exceptions import VarNotFound
 
 
 class LinVar:
@@ -18,7 +19,7 @@ class LinVar:
             yield f.readline()
 
     @classmethod
-    def unset(cls, key):
+    def unset(cls, key: str):
         """
         Unsets variable from environment
         :param key: Key of variable
@@ -45,19 +46,22 @@ class LinVar:
         cls.logger.debug(f"Finished Unsetting system variable {key}")
 
     @classmethod
-    def get(cls, key, default=VarNotFound):
+    def get(cls, key: str, default: Union[Any, VarNotFound] = VarNotFound):
         """
         Get Environment Variable
         :param key: Key of variable
         :param default: Returned if variable empty or undefined
         :return: 
         """
-        value = subprocess.check_output([
-            "/usr/bin/env",
-            "bash",
-            "-ic",
-            f". ~/.bashrc && echo -n ${key}"
-        ], stderr=subprocess.DEVNULL).decode("utf-8")
+        value: str = subprocess.check_output(
+            [
+                "/usr/bin/env",
+                "bash",
+                "-ic",
+                f". ~/.bashrc && echo -n ${key}"
+            ], stderr=subprocess.DEVNULL).decode("utf-8")
+
+        # Check for empty or unset variable
         if not value:
 
             if default == VarNotFound:
@@ -71,7 +75,7 @@ class LinVar:
         return value
 
     @classmethod
-    def set(cls, key, value):
+    def set(cls, key: str, value: str):
         """
         Set Environment Variable
         :param key: Key of variable

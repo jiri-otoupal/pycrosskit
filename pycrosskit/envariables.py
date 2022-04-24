@@ -16,11 +16,11 @@ class SysEnv(type):
             return mcs.system_env_handler
 
         if os.name == "nt":
-            from pycrosskit.env_platforms.winvar import WinVar
+            from pycrosskit.env_platforms.windows import WinVar
 
             detected_env = WinVar()
         else:
-            from pycrosskit.env_platforms.linvar import LinVar
+            from pycrosskit.env_platforms.linux import LinVar
 
             detected_env = LinVar()
 

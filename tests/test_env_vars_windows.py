@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from pycrosskit.env_platforms.var_exceptions import VarNotFound
+from pycrosskit.env_platforms.exceptions import VarNotFound
 from pycrosskit.envariables import SysEnv
 
 

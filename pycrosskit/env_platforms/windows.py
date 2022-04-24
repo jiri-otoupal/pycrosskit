@@ -4,7 +4,7 @@ import subprocess
 import winreg
 from typing import Any, Union
 
-from pycrosskit.env_platforms.var_exceptions import VarNotFound
+from pycrosskit.env_platforms.exceptions import VarNotFound
 
 
 class WinVar:
@@ -13,28 +13,32 @@ class WinVar:
     @classmethod
     def __get(cls, key: str, reg_path: str, registry: bool):
         if registry:
-            policy_key = cls.__get_policy_key(reg_path)
+            policy_key, root = cls.__get_policy_key_readonly(reg_path)
             try:
                 value = winreg.QueryValue(policy_key, str(key))
             except FileNotFoundError:
                 raise VarNotFound("This Registry Path does not exists on this system",
                                   "Please check path in regedit.exe")
+            finally:
+                if root is not None:
+                    root.Close()
         else:
             value = str(subprocess.check_output("echo %" + key + "%", shell=True),
                         "utf-8") \
                 .replace("\r\n", "").replace("%", "")
+
         return value
 
     @classmethod
-    def __get_policy_key(cls, reg_path):
+    def __get_policy_key_readonly(cls, reg_path: str):
         root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
         policy_key = winreg.OpenKeyEx(root, reg_path)
-        return policy_key
+        return policy_key, root
 
     @classmethod
-    def __unset(cls, key: str, policy_key, registry: bool):
+    def __unset(cls, key: str, policy_key: winreg.HKEYType, registry: bool):
         if not registry:
-            err = os.system("REG delete HKCU\Environment /F /V " + str(key))
+            err = os.system(r"REG delete HKCU\Environment /F /V " + str(key))
             if err != 0:
                 raise VarNotFound("Environment Variable not found")
         else:
@@ -54,7 +58,7 @@ class WinVar:
         """
         try:
             cls.logger.debug(f"Unsetting system variable {key}")
-            policy_key = cls.__get_policy_key(reg_path)
+            policy_key, root = cls.__get_policy_key_readonly(reg_path)
             cls.__unset(key, policy_key, registry)
             cls.logger.debug(f"Finished Unsetting system variable {key}")
         except FileNotFoundError as ex:
@@ -78,12 +82,9 @@ class WinVar:
         :return: Value from variable or None if failed
         :rtype: str or None
         """
-        root = None
 
         try:
             value = cls.__get(key, reg_path, registry)
-            if registry and root is not None:
-                root.Close()
 
             cls.logger.debug(f"Got variable {key} {value=}")
         except VarNotFound as ex:
