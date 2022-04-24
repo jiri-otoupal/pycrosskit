@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import winreg
@@ -7,6 +8,7 @@ from pycrosskit.env_platforms.var_exceptions import VarNotFound
 
 
 class WinVar:
+    logger = logging.getLogger("env_vars")
 
     @classmethod
     def __get(cls, key: str, reg_path: str, registry: bool):
@@ -30,32 +32,36 @@ class WinVar:
         return policy_key
 
     @classmethod
-    def __unset(cls, name: str, policy_key, registry: bool):
+    def __unset(cls, key: str, policy_key, registry: bool):
         if not registry:
-            err = os.system("REG delete HKCU\Environment /F /V " + str(name))
+            err = os.system("REG delete HKCU\Environment /F /V " + str(key))
             if err != 0:
                 raise VarNotFound("Environment Variable not found")
         else:
-            winreg.DeleteKey(policy_key, str(name))
+            winreg.DeleteKey(policy_key, str(key))
 
     @classmethod
-    def unset(cls, name,
+    def unset(cls, key,
               reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
               registry=True, silent=False):
         """
         Unsets variable from environment or registry
-        :param name: Variable name
+        :param key: Variable name
         :param reg_path: Register path for windows
         :param registry: Only for windows, if true variable is obtained from registry path
                         if false variable is obtained to environment variables
         :param silent: If unset should fail silently in case that variable does not exist
         """
         try:
+            cls.logger.debug(f"Unsetting system variable {key}")
             policy_key = cls.__get_policy_key(reg_path)
-            cls.__unset(name, policy_key, registry)
+            cls.__unset(key, policy_key, registry)
+            cls.logger.debug(f"Finished Unsetting system variable {key}")
         except FileNotFoundError as ex:
             if not silent:
+                cls.logger.debug(f"Unset of variable {key} failed")
                 raise VarNotFound(str(ex))
+            cls.logger.debug(f"Unset of variable {key} failed silently")
 
     @classmethod
     def get(cls, key: str, default: Union[Any, VarNotFound] = VarNotFound,
@@ -78,9 +84,13 @@ class WinVar:
             value = cls.__get(key, reg_path, registry)
             if registry and root is not None:
                 root.Close()
+
+            cls.logger.debug(f"Got variable {key} {value=}")
         except VarNotFound as ex:
             if default != VarNotFound:
+                cls.logger.debug(f"Returning default variable {key} not found or empty")
                 return default
+            cls.logger.debug(f"Variable {key} not found")
             raise ex
         return value
 
@@ -106,8 +116,13 @@ class WinVar:
                 policy_key = winreg.CreateKey(key_ex, key)
                 winreg.SetValueEx(policy_key, subkey, 0, winreg.REG_SZ, value)
                 root.Close()
+                cls.logger.debug(f"Set variable to registry {key} {value=}")
             except PermissionError as ex:
                 if not silent:
+                    cls.logger.debug(f"Set variable to registry failed {key} {value=}")
                     raise ex
+                cls.logger.debug(f"Set variable to registry failed silently "
+                                 f"{key} {value=}")
         else:
             os.system("setx " + str(key) + " " + str(value))
+            cls.logger.debug(f"Set variable {key} {value=}")

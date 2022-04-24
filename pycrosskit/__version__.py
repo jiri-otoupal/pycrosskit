@@ -6,7 +6,8 @@ Information about the current version of the py-package-template package.
 """
 
 __title__ = 'pycrosskit'
-__description__ = 'Cross Platform Toolkit for Windows and Linux in order to make variables and shortcuts easy'
+__description__ = 'Cross Platform Toolkit for Windows and Linux in order to make ' \
+                  'variables and shortcuts easy '
 __version__ = '1.0.5.1'
 __author__ = 'Jiri Otoupal'
 __author_email__ = 'jiri-otoupal@ips-database.eu'

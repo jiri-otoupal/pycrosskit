@@ -1,9 +1,13 @@
 import logging
 import os
+import sys
 
 
 class SysEnv(type):
     logger = logging.getLogger("env_vars")
+    sys.stdout.write = logger.info
+    sys.stderr.write = logger.error
+
     system_env_handler = None
 
     def __new__(mcs, *args, **kwargs):
