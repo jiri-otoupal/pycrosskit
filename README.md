@@ -76,15 +76,15 @@ SysEnv.save_shell_specs(shell="zsh", shell_file="~/.zsh")
 # * reg_path works only for windows as register path (is ignored if registry=False) 
 # * registry works only for windows, if is False variable is saved to User Environment Variables
 SysEnv().set(key="spaghetti", value="bologna", subkey="italian_food", reg_path="HKEY-...\\CustomPath",
-             registry=True | False)
+             registry=True)
 
 # Will Get Persistent Value for Variable in System
 # * reg_path works only for windows as register path
 # * registry works only for windows, if is False variable is obtained from User Environment Variables
-SysEnv().get(key="spaghetti", reg_path="HKEY-...\\CustomPath", registry=True | False)
+SysEnv().get(key="spaghetti", reg_path="HKEY-...\\CustomPath", registry=True)
 
 # Will unset variable from your environment or registry
-SysEnv().unset(key="spaghetti", registry=True | False)
+SysEnv().unset(key="spaghetti", registry=True)
 
 
 ```
