@@ -1,17 +1,16 @@
 import logging
 import os
-import sys
 
 
-class SysEnv(type):
+class SysEnv:
     logger = logging.getLogger("env_vars")
-    sys.stdout.write = logger.info
-    sys.stderr.write = logger.error
+    stdout = logger.info
+    stderr = logger.error
 
     system_env_handler = None
 
     @classmethod
-    def save_shell_specs(mcs, shell, shell_file):
+    def save_shell_specs(cls, shell, shell_file):
         """
         Save state of shell specs for overriding this in all argument functions such as
 
@@ -24,11 +23,11 @@ class SysEnv(type):
         :param shell:
         :param shell_file:
         """
-        if mcs.system_env_handler.shell == "batch":
-            mcs.logger.warning("Trying to change shell of windows machine")
+        if cls.system_env_handler.shell == "batch":
+            cls.logger.warning("Trying to change shell of windows machine")
 
-        mcs.system_env_handler.shell = shell
-        mcs.system_env_handler.shell_file = shell_file
+        cls.system_env_handler.shell = shell
+        cls.system_env_handler.shell_file = shell_file
 
     def __new__(mcs, *args, **kwargs):
         if mcs.system_env_handler is not None:
