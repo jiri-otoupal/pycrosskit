@@ -65,7 +65,7 @@ class LinVar:
 
             replacement_lines.append(line)
 
-        with open(shell_file, "w") as f:
+        with open(os.path.expanduser(shell_file), "w") as f:
             f.writelines(replacement_lines)
 
         cls.logger.debug(f"Finished Unsetting system variable {key}")
