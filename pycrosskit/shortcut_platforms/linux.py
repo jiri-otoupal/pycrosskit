@@ -99,10 +99,8 @@ def create_shortcut(shortcut_instance,
                                            icon=shortcut_instance.icon_path,
                                            args=shortcut_instance.arguments)
     user_folders = get_folders()
-    desktop_path = str(
-        Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext))
-    startmenu_path = str(
-        Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext))
+    desktop_path = Path(user_folders.desktop)
+    startmenu_path = Path(user_folders.startmenu)
 
     if desktop:
         __write_shortcut(desktop_path, shortcut_instance, file_content)
@@ -113,16 +111,16 @@ def create_shortcut(shortcut_instance,
     return desktop_path, startmenu_path
 
 
-def __write_shortcut(dest_path, shortcut_instance, file_content):
+def __write_shortcut(dest_path: Path, shortcut_instance, file_content):
     """
     Writes shortcut content to destination
     :param dest_path: Path where write file
     :param shortcut_instance: Instance of shortcut that will be used
     :param file_content: Content of future icon from DESKTOP_FORM.format(...)
     """
-    if not os.path.exists(dest_path):
-        os.makedirs(dest_path)
-    dest = str(Path(dest_path) / (shortcut_instance.shortcut_name + scut_ext))
+    if not dest_path.parent.exists():
+        os.makedirs(str(dest_path))
+    dest = str(dest_path / (shortcut_instance.shortcut_name + scut_ext))
     with open(dest, 'w') as f_out:
         f_out.write(file_content)
     st = os.stat(dest)

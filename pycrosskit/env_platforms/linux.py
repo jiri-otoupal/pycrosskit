@@ -11,7 +11,7 @@ class LinVar:
     shell_file = "~/.bashrc"
 
     logger = logging.getLogger("env_vars")
-    EXPORT_STRING: lambda key, value: f"export {key}=\"{value}\""
+    EXPORT_STRING = lambda key, value: f"export {key}=\"{value}\""
 
     @classmethod
     def __fetch_bashrc_line(cls, shell_file="~/.bashrc") -> str:
