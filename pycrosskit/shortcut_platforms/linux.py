@@ -85,28 +85,41 @@ def create_shortcut(shortcut_instance,
     :rtype: str, str
     """
     if shortcut_instance.work_path is None:
-        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
-                                   exe=shortcut_instance.exec_path, icon=shortcut_instance.icon_path,
+        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name,
+                                   desc=shortcut_instance.description,
+                                   exe=shortcut_instance.exec_path,
+                                   icon=shortcut_instance.icon_path,
                                    args=shortcut_instance.arguments)
     else:
-        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name, desc=shortcut_instance.description,
+        text = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name,
+                                   desc=shortcut_instance.description,
                                    exe="bash -c 'cd " + shortcut_instance.work_path + " && "
                                        + shortcut_instance.exec_path + "'",
                                    icon=shortcut_instance.icon_path,
                                    args=shortcut_instance.arguments)
     user_folders = get_folders()
-    for (create, folder) in ((desktop, user_folders.desktop),
-                             (startmenu, user_folders.startmenu)):
-        if create:
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            dest = str(Path(folder) / (shortcut_instance.shortcut_name + scut_ext))
-            with open(dest, 'w') as f_out:
-                f_out.write(text)
-            st = os.stat(dest)
-            os.chmod(dest, st.st_mode | stat.S_IEXEC)
+    desktop_path = str(
+        Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext))
+    startmenu_path = str(
+        Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext))
 
-    return user_folders.desktop, user_folders.startmenu
+    if desktop:
+        __write_shortcut(desktop_path, shortcut_instance, text)
+
+    if startmenu:
+        __write_shortcut(startmenu_path, shortcut_instance, text)
+
+    return desktop_path, startmenu_path
+
+
+def __write_shortcut(dest_path, shortcut_instance, icon_content):
+    if not os.path.exists(dest_path):
+        os.makedirs(dest_path)
+    dest = str(Path(dest_path) / (shortcut_instance.shortcut_name + scut_ext))
+    with open(dest, 'w') as f_out:
+        f_out.write(icon_content)
+    st = os.stat(dest)
+    os.chmod(dest, st.st_mode | stat.S_IEXEC)
 
 
 def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
