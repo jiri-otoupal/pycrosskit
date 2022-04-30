@@ -20,7 +20,7 @@ class LinVar:
         """
         _, shell_file = cls.get_shell(shell_file)
 
-        with open(shell_file, "r") as f:
+        with open(os.path.expanduser(shell_file), "r") as f:
             yield f.readline()
 
     @classmethod
