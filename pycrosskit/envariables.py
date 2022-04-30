@@ -29,10 +29,10 @@ class SysEnv:
         cls.system_env_handler.shell = shell
         cls.system_env_handler.shell_file = shell_file
 
-    def __new__(mcs, *args, **kwargs):
-        if mcs.system_env_handler is not None:
-            mcs.logger.debug(f"Accessed instance of type {os.name}")
-            return mcs.system_env_handler
+    def __new__(cls, *args, **kwargs):
+        if cls.system_env_handler is not None:
+            cls.logger.debug(f"Accessed instance of type {os.name}")
+            return cls.system_env_handler
 
         if os.name == "nt":
             from pycrosskit.env_platforms.windows import WinVar
@@ -43,7 +43,7 @@ class SysEnv:
 
             detected_env = LinVar()
 
-        mcs.logger.debug(f"Created new instance of type {os.name}")
-        mcs.system_env_handler = detected_env
+        cls.logger.debug(f"Created new instance of type {os.name}")
+        cls.system_env_handler = detected_env
 
         return detected_env
