@@ -21,7 +21,8 @@ class LinVar:
         _, shell_file = cls.get_shell(shell_file)
 
         with open(os.path.expanduser(shell_file), "r") as f:
-            yield f.readline()
+            while line := f.readline():
+                yield line
 
     @classmethod
     def get_shell(cls, shell: str = "bash", shell_file: str = "~/.bashrc") -> \
