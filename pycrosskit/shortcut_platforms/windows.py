@@ -11,8 +11,8 @@ from win32comext.shell import shell, shellcon
 
 from pycrosskit.shortcuts import UserFolders
 
-scut_ext = '.lnk'
-ico_ext = ('ico',)
+scut_ext = ".lnk"
+ico_ext = ("ico",)
 
 # batch file to activate the environment
 # for Anaconda Python before running command.
@@ -23,6 +23,7 @@ _WSHELL = win32com.client.Dispatch("Wscript.Shell")
 
 # Windows Special Folders
 # see: https://docs.microsoft.com/en-us/windows/win32/shell/csidl
+
 
 def get_homedir():
     """Return home directory:
@@ -61,13 +62,15 @@ def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
     desktop_path, startmenu_path = None, None
 
     if startmenu:
-        startmenu_path = str(Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext))
-        _wscript_shortcut(startmenu_path, shortcut_instance,
-                          user_folders)
+        startmenu_path = str(
+            Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext)
+        )
+        _wscript_shortcut(startmenu_path, shortcut_instance, user_folders)
     if desktop:
-        desktop_path = str(Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext))
-        _wscript_shortcut(desktop_path, shortcut_instance,
-                          user_folders)
+        desktop_path = str(
+            Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext)
+        )
+        _wscript_shortcut(desktop_path, shortcut_instance, user_folders)
     return desktop_path, startmenu_path
 
 

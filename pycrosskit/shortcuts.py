@@ -5,11 +5,16 @@ UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
 
 class Shortcut:
-
-    def __init__(self, shortcut_name, exec_path, description="",
-                 icon_path="",
-                 desktop=False,
-                 start_menu=False, work_dir=None):
+    def __init__(
+        self,
+        shortcut_name,
+        exec_path,
+        description="",
+        icon_path="",
+        desktop=False,
+        start_menu=False,
+        work_dir=None,
+    ):
         """
 
         :param shortcut_name: Name of Shortcut that will be created
@@ -29,8 +34,9 @@ class Shortcut:
             from pycrosskit.shortcut_platforms.windows import create_shortcut
         else:
             from pycrosskit.shortcut_platforms.linux import create_shortcut
-        self.desktop_path, self.startmenu_path = create_shortcut(self, start_menu,
-                                                                 desktop)
+        self.desktop_path, self.startmenu_path = create_shortcut(
+            self, start_menu, desktop
+        )
 
     @staticmethod
     def delete(shortcut_name, desktop=False, start_menu=False):
