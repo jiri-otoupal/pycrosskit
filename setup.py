@@ -27,7 +27,7 @@ setup(
     url=about["__url__"],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.7,<4",
+    python_requires=">=3.6,<4",
     install_requires=["pywin32>=300; sys_platform == 'win32'"],
     extras_require={
         "dev": ["flake8<4.1", "pytest<7.2"],
