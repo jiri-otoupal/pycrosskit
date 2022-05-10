@@ -16,5 +16,4 @@ docs/build_*
 # misc
 .DS_Store
 /build-all.cmd
-/.github/
 /.idea/

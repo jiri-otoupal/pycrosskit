@@ -25,6 +25,7 @@ class Shortcut:
         :param bool desktop: True to Generate Desktop Shortcut, defaults to False
         :param bool start_menu: True to Generate Start Menu Shortcut, defaults to False
         :param str work_dir: _description_, defaults to None
+        
         """
         self.exec_path = str(exec_path)
         self.arguments = "".join(exec_path.split(" ")[1:])

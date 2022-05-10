@@ -99,6 +99,7 @@ def create_shortcut(
 
     :return: desktop and startmenu path
     :rtype: Tuple[str, str]
+
     """
     if shortcut_instance.work_path is None:
         file_content = DESKTOP_FORM.format(
