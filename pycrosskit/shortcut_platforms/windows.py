@@ -58,7 +58,7 @@ def get_folders() -> UserFolders:
     """Get user folders.
 
     :return UserFolders: user folders named tuple
-    """    
+    """
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 

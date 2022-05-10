@@ -1,5 +1,6 @@
 import os
 from collections import namedtuple
+from typing import Tuple
 
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
@@ -34,7 +35,7 @@ class Shortcut:
                                                                  desktop)
 
     @staticmethod
-    def delete(shortcut_name: str, desktop: bool=False, start_menu: bool=False):
+    def delete(shortcut_name: str, desktop: bool=False, start_menu: bool=False) -> Tuple[str, str]:
         """Remove existing Shortcut from the system.
 
         :param str shortcut_name: Name of shortcut
@@ -42,7 +43,7 @@ class Shortcut:
         :param bool start_menu: Delete Shortcut on Start Menu
 
         :return: desktop and startmenu path
-        :rtype: str, str
+        :return Tuple[str, str]: desktop_path, startmenu_path
         """
         if os.name == "nt":
             from pycrosskit.shortcut_platforms.windows import delete_shortcut
