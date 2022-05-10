@@ -96,7 +96,6 @@ class WinVar:
         :return: Value from variable or None if failed
         :rtype: str or None
         """
-
         try:
             value = cls.__get(key, reg_path, registry)
 
