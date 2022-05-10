@@ -28,9 +28,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.7,<4",
-    install_requires=["pywin32; sys_platform == 'win32'"],
+    install_requires=["pywin32>=300; sys_platform == 'win32'"],
     extras_require={
-        "dev": ["black", "pytest"],
+        "dev": ["flake8<4.1", "pytest<7.2"],
     },
     license=about["__license__"],
     zip_safe=True,
