@@ -9,8 +9,8 @@ from typing import Tuple
 
 from pycrosskit.shortcuts import UserFolders, Shortcut
 
-scut_ext = '.desktop'
-ico_ext = ('ico', 'svg', 'png')
+scut_ext = ".desktop"
+ico_ext = ("ico", "svg", "png")
 
 DESKTOP_FORM = """[Desktop Entry]
 Version=1.0
@@ -27,7 +27,7 @@ _HOME = None
 
 def get_homedir() -> str:
     """Determine home directory of current user.
-    
+
     :return str: path to the user home
     """
     global _HOME
@@ -50,34 +50,34 @@ def get_homedir() -> str:
 
 def get_desktop() -> str:
     """Return the user Desktop folder.
-    
+
     :return str: path to the Desktop folder
     """
     homedir = get_homedir()
-    desktop = os.path.join(homedir, 'Desktop')
+    desktop = os.path.join(homedir, "Desktop")
 
     # search for .config/user-dirs.dirs in HOMEDIR
-    ud_file = os.path.join(homedir, '.config', 'user-dirs.dirs')
+    ud_file = os.path.join(homedir, ".config", "user-dirs.dirs")
     if os.path.exists(ud_file):
         val = desktop
-        with open(ud_file, 'r') as fh:
+        with open(ud_file, "r") as fh:
             text = fh.readlines()
         for line in text:
-            if 'DESKTOP' in line:
-                line = line.replace('$HOME', homedir)[:-1]
-                key, val = line.split('=')
-                val = val.replace('"', '').replace("'", "")
+            if "DESKTOP" in line:
+                line = line.replace("$HOME", homedir)[:-1]
+                key, val = line.split("=")
+                val = val.replace('"', "").replace("'", "")
         desktop = val
     return desktop
 
 
 def get_startmenu() -> str:
     """Get user start menu location.
-    
+
     :return str: path to the start menu
     """
     homedir = get_homedir()
-    return os.path.join(homedir, '.local', 'share', 'applications')
+    return os.path.join(homedir, ".local", "share", "applications")
 
 
 def get_folders() -> UserFolders:
@@ -88,8 +88,9 @@ def get_folders() -> UserFolders:
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance: Shortcut,
-                    desktop: bool=False, startmenu: bool=False):
+def create_shortcut(
+    shortcut_instance: Shortcut, desktop: bool = False, startmenu: bool = False
+):
     """Creates shortcut on the system.
 
     :param Shortcut shortcut_instance: Shortcut Object
@@ -100,19 +101,23 @@ def create_shortcut(shortcut_instance: Shortcut,
     :rtype: Tuple[str, str]
     """
     if shortcut_instance.work_path is None:
-        file_content = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name,
-                                           desc=shortcut_instance.description,
-                                           exe=shortcut_instance.exec_path,
-                                           icon=shortcut_instance.icon_path,
-                                           args=shortcut_instance.arguments)
+        file_content = DESKTOP_FORM.format(
+            name=shortcut_instance.shortcut_name,
+            desc=shortcut_instance.description,
+            exe=shortcut_instance.exec_path,
+            icon=shortcut_instance.icon_path,
+            args=shortcut_instance.arguments,
+        )
     else:
-        file_content = DESKTOP_FORM.format(name=shortcut_instance.shortcut_name,
-                                           desc=shortcut_instance.description,
-                                           exe=f"bash -c "
-                                               f"'cd {shortcut_instance.work_path}"
-                                               f" && {shortcut_instance.exec_path}'",
-                                           icon=shortcut_instance.icon_path,
-                                           args=shortcut_instance.arguments)
+        file_content = DESKTOP_FORM.format(
+            name=shortcut_instance.shortcut_name,
+            desc=shortcut_instance.description,
+            exe=f"bash -c "
+            f"'cd {shortcut_instance.work_path}"
+            f" && {shortcut_instance.exec_path}'",
+            icon=shortcut_instance.icon_path,
+            args=shortcut_instance.arguments,
+        )
     user_folders = get_folders()
     desktop_path = Path(user_folders.desktop)
     startmenu_path = Path(user_folders.startmenu)
@@ -126,8 +131,7 @@ def create_shortcut(shortcut_instance: Shortcut,
     return desktop_path, startmenu_path
 
 
-
-def delete_shortcut(shortcut_name, desktop: bool=False, startmenu: bool=False):
+def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
     """Remove shortcut from the system.
 
     :param str shortcut_name: Shortcut Object
@@ -150,6 +154,7 @@ def delete_shortcut(shortcut_name, desktop: bool=False, startmenu: bool=False):
             os.remove(desktop_path)
     return desktop_path, startmenu_path
 
+
 def __write_shortcut(dest_path: Path, shortcut_instance: str, file_content: str):
     """Writes shortcut content to destination.
 
@@ -160,7 +165,7 @@ def __write_shortcut(dest_path: Path, shortcut_instance: str, file_content: str)
     if not dest_path.parent.exists():
         os.makedirs(str(dest_path))
     dest = str(dest_path / (shortcut_instance.shortcut_name + scut_ext))
-    with open(dest, 'w') as f_out:
+    with open(dest, "w") as f_out:
         f_out.write(file_content)
     st = os.stat(dest)
     os.chmod(dest, st.st_mode | stat.S_IEXEC)

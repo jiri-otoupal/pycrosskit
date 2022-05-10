@@ -10,15 +10,15 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../py-package-template-master'))
+sys.path.insert(0, os.path.abspath("../../py-package-template-master"))
 from py_pkg.__version__ import __version__
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Python Cross Platform Toolkit for Windows and Linux variables, shortcuts and start menu shortcuts'
-copyright = '2021, Jiri Otoupal'
-author = 'Jiri Otoupal'
+project = "Python Cross Platform Toolkit for Windows and Linux variables, shortcuts and start menu shortcuts"
+copyright = "2021, Jiri Otoupal"
+author = "Jiri Otoupal"
 
 # The short X.Y version
 version = __version__[:-2]

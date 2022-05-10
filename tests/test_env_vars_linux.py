@@ -5,7 +5,6 @@ from pycrosskit.envariables import SysEnv
 
 
 class TestEnvVars(unittest.TestCase):
-
     def test_set_var(self):
         try:
             SysEnv().set("test", "test")
@@ -35,6 +34,6 @@ class TestEnvVars(unittest.TestCase):
             pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.name != "nt":
         unittest.main()

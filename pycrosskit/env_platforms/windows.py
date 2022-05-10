@@ -18,15 +18,19 @@ class WinVar:
             try:
                 value = winreg.QueryValue(policy_key, str(key))
             except FileNotFoundError:
-                raise VarNotFound("This Registry Path does not exists on this system",
-                                  "Please check path in regedit.exe")
+                raise VarNotFound(
+                    "This Registry Path does not exists on this system",
+                    "Please check path in regedit.exe",
+                )
             finally:
                 if root is not None:
                     root.Close()
         else:
-            value = str(subprocess.check_output("echo %" + key + "%", shell=True),
-                        "utf-8") \
-                .replace("\r\n", "").replace("%", "")
+            value = (
+                str(subprocess.check_output("echo %" + key + "%", shell=True), "utf-8")
+                .replace("\r\n", "")
+                .replace("%", "")
+            )
 
         return value
 
@@ -47,9 +51,13 @@ class WinVar:
             winreg.DeleteKey(policy_key, str(key))
 
     @classmethod
-    def unset(cls, key,
-              reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-              registry=True, silent=False):
+    def unset(
+        cls,
+        key,
+        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        registry=True,
+        silent=False,
+    ):
         """
         Unsets variable from environment or registry
         :param key: Variable name
@@ -70,9 +78,13 @@ class WinVar:
             cls.logger.debug(f"Unset of variable {key} failed silently")
 
     @classmethod
-    def get(cls, key: str, default: Union[Any, VarNotFound] = VarNotFound,
-            reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            registry: bool = True) -> str:
+    def get(
+        cls,
+        key: str,
+        default: Union[Any, VarNotFound] = VarNotFound,
+        reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        registry: bool = True,
+    ) -> str:
         """
         Get Environment Variable
         :param default: Value returned if not found
@@ -98,9 +110,15 @@ class WinVar:
         return value
 
     @classmethod
-    def set(cls, key, value, subkey="",
-            reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            registry=True, silent=False):
+    def set(
+        cls,
+        key,
+        value,
+        subkey="",
+        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        registry=True,
+        silent=False,
+    ):
         """
         Set Environment Variable
         :param silent: If permission error should fail silently
@@ -123,8 +141,9 @@ class WinVar:
                 if not silent:
                     cls.logger.debug(f"Set variable to registry failed {key} {value=}")
                     raise ex
-                cls.logger.debug(f"Set variable to registry failed silently "
-                                 f"{key} {value=}")
+                cls.logger.debug(
+                    f"Set variable to registry failed silently " f"{key} {value=}"
+                )
         else:
             os.system("setx " + str(key) + " " + str(value))
             cls.logger.debug(f"Set variable {key} {value=}")
