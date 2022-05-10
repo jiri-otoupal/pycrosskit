@@ -1,3 +1,5 @@
+#! python3  # noqa: E265
+
 # -- IMPORTS
 
 # standard
@@ -12,6 +14,7 @@ else:
     from pycrosskit.shortcut_platforms.linux import (create_shortcut,
                                                      delete_shortcut)
 
+# -- GLOBALS
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
 # -- CLASSES
