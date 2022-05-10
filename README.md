@@ -98,6 +98,8 @@ Clone the repository, then:
 python -m pip install -U -r requirements.txt
 # install development dependencies
 python -m pip install -U -e .[dev]
+# install git hooks
+pre-commit install
 ```
 
 ----
