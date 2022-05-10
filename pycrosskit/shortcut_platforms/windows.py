@@ -95,12 +95,11 @@ def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
     return desktop_path, startmenu_path
 
 
-def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
-    """
-    Shortcut secondary function
+def _wscript_shortcut(dest_path, shortcut_instance) -> None:
+    """Shortcut secondary function.
+
     :param dest_path: Destination path for shortcut
     :param shortcut_instance: Shortcut instance
-    :param user_folders: System folders
     """
     wscript = _WSHELL.CreateShortCut(dest_path)
     wscript.Targetpath = shortcut_instance.exec_path
