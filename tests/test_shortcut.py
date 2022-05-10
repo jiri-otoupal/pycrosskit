@@ -5,7 +5,6 @@ from pycrosskit.shortcuts import Shortcut
 
 
 class Test_Shortcuts(unittest.TestCase):
-
     def test_create_desktop(self):
         sh = Shortcut("Test", "__init__.py", desktop=True)
         self.assertEqual(True, os.path.exists(sh.desktop_path))
@@ -33,5 +32,5 @@ class Test_Shortcuts(unittest.TestCase):
         self.assertEqual(True, not os.path.exists(start_menu))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

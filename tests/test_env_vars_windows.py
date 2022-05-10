@@ -34,6 +34,6 @@ class WindowsVarsTest(unittest.TestCase):
             SysEnv().unset("test", registry=False)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if os.name == "nt":
         unittest.main()

@@ -11,7 +11,7 @@ class LinVar:
     shell_file = "~/.bashrc"
 
     logger = logging.getLogger("env_vars")
-    EXPORT_STRING = lambda key, value: f"export {key}=\"{value}\""
+    EXPORT_STRING = lambda key, value: f'export {key}="{value}"'
 
     @classmethod
     def __fetch_bashrc_line(cls, shell_file="~/.bashrc") -> str:
@@ -25,8 +25,9 @@ class LinVar:
                 yield line
 
     @classmethod
-    def get_shell(cls, shell: str = "bash", shell_file: str = "~/.bashrc") -> \
-            Tuple[str, str]:
+    def get_shell(
+        cls, shell: str = "bash", shell_file: str = "~/.bashrc"
+    ) -> Tuple[str, str]:
         """
         Get Shell that is used for every access
         :param shell: Shell binary name
@@ -72,26 +73,28 @@ class LinVar:
         cls.logger.debug(f"Finished Unsetting system variable {key}")
 
     @classmethod
-    def get(cls, key: str, default: Union[Any, VarNotFound] = VarNotFound, shell="bash",
-            shell_file="~/.bashrc") -> str:
+    def get(
+        cls,
+        key: str,
+        default: Union[Any, VarNotFound] = VarNotFound,
+        shell="bash",
+        shell_file="~/.bashrc",
+    ) -> str:
         """
         Get Environment Variable
         :param shell: Custom Shell
         :param shell_file: Custom shell file path
         :param key: Key of variable
         :param default: Returned if variable empty or undefined
-        :return: 
+        :return:
         """
         shell, shell_file = cls.get_shell(shell, shell_file)
 
         cls.logger.debug(f"Getting variable {key} {shell=} {shell_file}")
         value: str = subprocess.check_output(
-            [
-                "/usr/bin/env",
-                shell,
-                "-ic",
-                f". {shell_file} && echo -n ${key}"
-            ], stderr=subprocess.DEVNULL).decode("utf-8")
+            ["/usr/bin/env", shell, "-ic", f". {shell_file} && echo -n ${key}"],
+            stderr=subprocess.DEVNULL,
+        ).decode("utf-8")
 
         # Check for empty or unset variable
         if not value:
