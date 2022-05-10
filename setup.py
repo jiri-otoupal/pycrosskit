@@ -28,7 +28,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     python_requires=">=3.4.*",
-    install_requires=[""],
+    install_requires=["pywin32; sys_platform == 'win32'"],
+    extras_require={
+        "test": ["pytest"],
+    },
     license=about['__license__'],
     zip_safe=True,
     entry_points={
