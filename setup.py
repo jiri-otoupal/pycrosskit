@@ -30,7 +30,7 @@ setup(
     python_requires=">=3.4.*",
     install_requires=["pywin32; sys_platform == 'win32'"],
     extras_require={
-        "test": ["pytest"],
+        "dev": ["pytest"],
     },
     license=about['__license__'],
     zip_safe=True,
