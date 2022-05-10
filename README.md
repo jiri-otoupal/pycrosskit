@@ -18,12 +18,12 @@ or
 pip3 install pycrosskit
 ```
 
-#### Supported Platforms:
+## Supported Platforms:
 
 * Linux
 * Windows
 
-### Shortcuts usage:
+## Shortcuts usage:
 
 ```python
 from pycrosskit.shortcuts import Shortcut
@@ -42,7 +42,7 @@ Shortcut.delete(shortcut_name="My Spaghetti Shortcut", desktop=True, start_menu=
 
 ```
 
-### Environment Variables usage:
+## Environment Variables usage:
 
 Accessing and write to environment variables is automatically handled based on your system Lin/Win SysEnv class is
 implemented as a singleton metaclass so don't be afraid about multiple instances
@@ -85,9 +85,20 @@ SysEnv().get(key="spaghetti", reg_path="HKEY-...\\CustomPath", registry=True)
 
 # Will unset variable from your environment or registry
 SysEnv().unset(key="spaghetti", registry=True)
-
-
 ```
+
+## Develop
+
+Clone the repository, then:
+
+```sh
+# install dependencies and package in editable mode
+python -m pip install -U -r requirements.txt
+# install development dependencies
+python -m pip install -U -e .[dev]
+```
+
+----
 
 <hr>
 Did I made your life less painfull ? 
