@@ -1,14 +1,8 @@
 # -- IMPORTS
 
 # standard
-import logging
 import os
 from collections import namedtuple
-from pathlib import Path
-from typing import Tuple, Union
-
-# package
-from pycrosskit.shortcut_platforms.windows import delete_shortcut
 
 # conditional
 if os.name == "nt":
