@@ -21,12 +21,14 @@ class LinVar:
         _, shell_file = cls.get_shell(shell_file)
 
         with open(os.path.expanduser(shell_file), "r") as f:
-            while line := f.readline():
+            line = True
+            while line:
+                line = f.readline()
                 yield line
 
     @classmethod
     def get_shell(
-        cls, shell: str = "bash", shell_file: str = "~/.bashrc"
+            cls, shell: str = "bash", shell_file: str = "~/.bashrc"
     ) -> Tuple[str, str]:
         """
         Get Shell that is used for every access
@@ -74,11 +76,11 @@ class LinVar:
 
     @classmethod
     def get(
-        cls,
-        key: str,
-        default: Union[Any, VarNotFound] = VarNotFound,
-        shell="bash",
-        shell_file="~/.bashrc",
+            cls,
+            key: str,
+            default: Union[Any, VarNotFound] = VarNotFound,
+            shell="bash",
+            shell_file="~/.bashrc",
     ) -> str:
         """
         Get Environment Variable
