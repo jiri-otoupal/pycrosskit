@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import winreg
@@ -8,6 +9,7 @@ from pycrosskit.env_platforms.exceptions import VarNotFound
 
 class WinVar:
     shell = "batch"
+    logger: logging.Logger = None
 
     def __new__(cls, logger):
         cls.logger = logger

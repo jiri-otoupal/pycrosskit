@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 from typing import Union, Any, Tuple
@@ -8,6 +9,7 @@ from pycrosskit.env_platforms.exceptions import VarNotFound
 class LinVar:
     shell = "bash"
     shell_file = "~/.bashrc"
+    logger: logging.Logger = None
 
     EXPORT_STRING = lambda key, value: f'export {key}="{value}"'
 
