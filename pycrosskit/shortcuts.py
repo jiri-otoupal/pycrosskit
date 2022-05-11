@@ -1,9 +1,23 @@
+#! python3  # noqa: E265
+
+# -- IMPORTS
+
+# standard
 import os
 from collections import namedtuple
 
+# conditional
+if os.name == "nt":
+    from pycrosskit.shortcut_platforms.windows import (create_shortcut,
+                                                       delete_shortcut)
+else:
+    from pycrosskit.shortcut_platforms.linux import (create_shortcut,
+                                                     delete_shortcut)
+
+# -- GLOBALS
 UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 
-
+# -- CLASSES
 class Shortcut:
     def __init__(
         self,
@@ -30,10 +44,8 @@ class Shortcut:
         self.description = description
         self.icon_path = str(icon_path)
         self.work_path = str(work_dir)
-        if os.name == "nt":
-            from pycrosskit.shortcut_platforms.windows import create_shortcut
-        else:
-            from pycrosskit.shortcut_platforms.linux import create_shortcut
+
+        # create shortcut
         self.desktop_path, self.startmenu_path = create_shortcut(
             self, start_menu, desktop
         )
@@ -48,8 +60,4 @@ class Shortcut:
         :return: desktop and startmenu path
         :rtype: str, str
         """
-        if os.name == "nt":
-            from pycrosskit.shortcut_platforms.windows import delete_shortcut
-        else:
-            from pycrosskit.shortcut_platforms.linux import delete_shortcut
         return delete_shortcut(shortcut_name, desktop, start_menu)
