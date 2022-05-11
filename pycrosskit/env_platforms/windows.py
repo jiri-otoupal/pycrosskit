@@ -1,4 +1,3 @@
-import logging
 import os
 import subprocess
 import winreg
@@ -8,8 +7,11 @@ from pycrosskit.env_platforms.exceptions import VarNotFound
 
 
 class WinVar:
-    logger = logging.getLogger("env_vars")
     shell = "batch"
+
+    def __new__(cls, logger):
+        cls.logger = logger
+        return cls
 
     @classmethod
     def __get(cls, key: str, reg_path: str, registry: bool) -> str:
@@ -28,8 +30,8 @@ class WinVar:
         else:
             value = (
                 str(subprocess.check_output("echo %" + key + "%", shell=True), "utf-8")
-                .replace("\r\n", "")
-                .replace("%", "")
+                    .replace("\r\n", "")
+                    .replace("%", "")
             )
 
         return value
@@ -52,11 +54,11 @@ class WinVar:
 
     @classmethod
     def unset(
-        cls,
-        key,
-        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-        registry=True,
-        silent=False,
+            cls,
+            key,
+            reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            registry=True,
+            silent=False,
     ):
         """
         Unsets variable from environment or registry
@@ -79,11 +81,11 @@ class WinVar:
 
     @classmethod
     def get(
-        cls,
-        key: str,
-        default: Union[Any, VarNotFound] = VarNotFound,
-        reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-        registry: bool = True,
+            cls,
+            key: str,
+            default: Union[Any, VarNotFound] = VarNotFound,
+            reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            registry: bool = True,
     ) -> str:
         """
         Get Environment Variable
@@ -110,13 +112,13 @@ class WinVar:
 
     @classmethod
     def set(
-        cls,
-        key,
-        value,
-        subkey="",
-        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-        registry=True,
-        silent=False,
+            cls,
+            key,
+            value,
+            subkey="",
+            reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            registry=True,
+            silent=False,
     ):
         """
         Set Environment Variable

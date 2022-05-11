@@ -1,4 +1,3 @@
-import logging
 import os
 import subprocess
 from typing import Union, Any, Tuple
@@ -10,8 +9,11 @@ class LinVar:
     shell = "bash"
     shell_file = "~/.bashrc"
 
-    logger = logging.getLogger("env_vars")
     EXPORT_STRING = lambda key, value: f'export {key}="{value}"'
+
+    def __new__(cls, logger):
+        cls.logger = logger
+        return cls
 
     @classmethod
     def __fetch_bashrc_line(cls, shell_file="~/.bashrc") -> str:

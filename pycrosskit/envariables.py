@@ -37,11 +37,11 @@ class SysEnv:
         if os.name == "nt":
             from pycrosskit.env_platforms.windows import WinVar
 
-            detected_env = WinVar()
+            detected_env = WinVar(cls.logger)
         else:
             from pycrosskit.env_platforms.linux import LinVar
 
-            detected_env = LinVar()
+            detected_env = LinVar(cls.logger)
 
         cls.logger.debug(f"Created new instance of type {os.name}")
         cls.system_env_handler = detected_env
