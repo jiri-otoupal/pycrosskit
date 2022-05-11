@@ -5,11 +5,12 @@ Create desktop shortcuts for Windows
 import os
 import stat
 from pathlib import Path
+from typing import Tuple
 
 import win32com.client
 from win32comext.shell import shell, shellcon
 
-from pycrosskit.shortcuts import UserFolders
+from pycrosskit.shortcuts import UserFolders, Shortcut
 
 scut_ext = ".lnk"
 ico_ext = ("ico",)
@@ -25,38 +26,56 @@ _WSHELL = win32com.client.Dispatch("Wscript.Shell")
 # see: https://docs.microsoft.com/en-us/windows/win32/shell/csidl
 
 
-def get_homedir():
-    """Return home directory:
-    note that we return CSIDL_PROFILE, not
-    CSIDL_APPDATA, CSIDL_LOCAL_APPDATA,  or CSIDL_COMMON_APPDATA
+def get_homedir() -> str:
+    """
+    Return home directory.
+
+    Note that we return CSIDL_PROFILE, not CSIDL_APPDATA,
+    CSIDL_LOCAL_APPDATA,  or CSIDL_COMMON_APPDATA.
+
+    :return str: path to the user home
+
     """
     return shell.SHGetFolderPath(0, shellcon.CSIDL_PROFILE, None, 0)
 
 
-def get_desktop():
-    """Return user Desktop folder"""
+def get_desktop() -> str:
+    """Return the user Desktop folder.
+
+    :return str: path to the Desktop folder
+    """
     return shell.SHGetFolderPath(0, shellcon.CSIDL_DESKTOP, None, 0)
 
 
-def get_startmenu():
-    """Return user Start Menu Programs folder
-    note that we return CSIDL_PROGRAMS not CSIDL_COMMON_PROGRAMS
+def get_startmenu() -> str:
+    """Return user Start Menu Programs folder.
+
+    Note that we return CSIDL_PROGRAMS not CSIDL_COMMON_PROGRAMS
+
+    :return str: path to the Start Menu Programs folder
     """
     return shell.SHGetFolderPath(0, shellcon.CSIDL_PROGRAMS, None, 0)
 
 
-def get_folders():
+def get_folders() -> UserFolders:
+    """Get user folders.
+
+    :return UserFolders: user folders named tuple
+    """
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
-    """
-    Creates Shortcut
-    :param shortcut_instance: Shortcut Object
-    :param startmenu: True to create Start Menu Shortcut
-    :param desktop: True to create Desktop Shortcut
-    :return desktop_path, startmenu_path
-    :rtype: str, str
+def create_shortcut(
+    shortcut_instance: Shortcut, startmenu: bool = False, desktop: bool = False
+) -> Tuple[str, str]:
+    """Creates shortcut on the system.
+
+    :param Shortcut shortcut_instance: Shortcut Object
+    :param bool startmenu: True to create Start Menu Shortcut
+    :param bool desktop: True to create Desktop Shortcut
+
+    :return: desktop and startmenu path
+    :rtype: Tuple[str, str]
     """
     user_folders = get_folders()
     desktop_path, startmenu_path = None, None
@@ -65,23 +84,26 @@ def create_shortcut(shortcut_instance, startmenu=False, desktop=False):
         startmenu_path = str(
             Path(user_folders.startmenu) / (shortcut_instance.shortcut_name + scut_ext)
         )
-        _wscript_shortcut(startmenu_path, shortcut_instance, user_folders)
+        _wscript_shortcut(startmenu_path, shortcut_instance)
+
     if desktop:
         desktop_path = str(
             Path(user_folders.desktop) / (shortcut_instance.shortcut_name + scut_ext)
         )
-        _wscript_shortcut(desktop_path, shortcut_instance, user_folders)
+        _wscript_shortcut(desktop_path, shortcut_instance)
     return desktop_path, startmenu_path
 
 
-def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
-    """
-    Deletes Shortcut
-    :param shortcut_name: Shortcut Object
-    :param startmenu: True to create Start Menu Shortcut
-    :param desktop: True to create Desktop Shortcut
-    :return desktop_path, startmenu_path
-    :rtype: str, str
+def delete_shortcut(
+    shortcut_name: str, startmenu: bool = False, desktop: bool = False
+) -> Tuple[str, str]:
+    """Remove shortcut from the system.
+
+    :param str shortcut_name: Shortcut Object
+    :param bool startmenu: True to create Start Menu Shortcut, defaults to False
+    :param bool desktop: True to create Desktop Shortcut, defaults to False
+
+    :return Tuple[str, str]: desktop_path, startmenu_path
     """
     user_folders = get_folders()
     desktop_path, startmenu_path = "", ""
@@ -98,12 +120,11 @@ def delete_shortcut(shortcut_name, startmenu=False, desktop=False):
     return desktop_path, startmenu_path
 
 
-def _wscript_shortcut(dest_path, shortcut_instance, user_folders):
-    """
-    Shortcut secondary function
+def _wscript_shortcut(dest_path: str, shortcut_instance: Shortcut) -> None:
+    """Shortcut secondary function.
+
     :param dest_path: Destination path for shortcut
     :param shortcut_instance: Shortcut instance
-    :param user_folders: System folders
     """
     wscript = _WSHELL.CreateShortCut(dest_path)
     wscript.Targetpath = shortcut_instance.exec_path

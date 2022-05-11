@@ -5,8 +5,9 @@ Create desktop shortcuts for Linux
 import os
 import stat
 from pathlib import Path
+from typing import Tuple
 
-from pycrosskit.shortcuts import UserFolders
+from pycrosskit.shortcuts import UserFolders, Shortcut
 
 scut_ext = ".desktop"
 ico_ext = ("ico", "svg", "png")
@@ -24,8 +25,11 @@ Exec={exe:s} {args:s}
 _HOME = None
 
 
-def get_homedir():
-    """determine home directory of current user"""
+def get_homedir() -> str:
+    """Determine home directory of current user.
+
+    :return str: path to the user home
+    """
     global _HOME
     if _HOME is not None:
         return _HOME
@@ -44,8 +48,11 @@ def get_homedir():
     return home
 
 
-def get_desktop():
-    """get desktop location"""
+def get_desktop() -> str:
+    """Return the user Desktop folder.
+
+    :return str: path to the Desktop folder
+    """
     homedir = get_homedir()
     desktop = os.path.join(homedir, "Desktop")
 
@@ -64,24 +71,35 @@ def get_desktop():
     return desktop
 
 
-def get_startmenu():
-    """get start menu location"""
+def get_startmenu() -> str:
+    """Get user start menu location.
+
+    :return str: path to the start menu
+    """
     homedir = get_homedir()
     return os.path.join(homedir, ".local", "share", "applications")
 
 
-def get_folders():
+def get_folders() -> UserFolders:
+    """Get user folders.
+
+    :return UserFolders: user folders named tuple
+    """
     return UserFolders(get_homedir(), get_desktop(), get_startmenu())
 
 
-def create_shortcut(shortcut_instance, desktop=False, startmenu=False):
-    """
-    Create Shortcut
-    :param shortcut_instance: Shortcut Instance
-    :param startmenu: True to create Start Menu Shortcut
-    :param desktop: True to create Desktop Shortcut
-    :return: desktop icon path, start menu path
-    :rtype: str, str
+def create_shortcut(
+    shortcut_instance: Shortcut, desktop: bool = False, startmenu: bool = False
+):
+    """Creates shortcut on the system.
+
+    :param Shortcut shortcut_instance: Shortcut Object
+    :param bool startmenu: True to create Start Menu Shortcut
+    :param bool desktop: True to create Desktop Shortcut
+
+    :return: desktop and startmenu path
+    :rtype: Tuple[str, str]
+
     """
     if shortcut_instance.work_path is None:
         file_content = DESKTOP_FORM.format(
@@ -114,30 +132,14 @@ def create_shortcut(shortcut_instance, desktop=False, startmenu=False):
     return desktop_path, startmenu_path
 
 
-def __write_shortcut(dest_path: Path, shortcut_instance, file_content):
-    """
-    Writes shortcut content to destination
-    :param dest_path: Path where write file
-    :param shortcut_instance: Instance of shortcut that will be used
-    :param file_content: Content of future icon from DESKTOP_FORM.format(...)
-    """
-    if not dest_path.parent.exists():
-        os.makedirs(str(dest_path))
-    dest = str(dest_path / (shortcut_instance.shortcut_name + scut_ext))
-    with open(dest, "w") as f_out:
-        f_out.write(file_content)
-    st = os.stat(dest)
-    os.chmod(dest, st.st_mode | stat.S_IEXEC)
+def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = False):
+    """Remove shortcut from the system.
 
+    :param str shortcut_name: Shortcut Object
+    :param bool startmenu: True to create Start Menu Shortcut, defaults to False
+    :param bool desktop: True to create Desktop Shortcut, defaults to False
 
-def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
-    """
-    Delete Shortcut
-    :param shortcut_name: Name of Shortcut
-    :param startmenu: True to create Start Menu Shortcut
-    :param desktop: True to create Desktop Shortcut
-    :return: desktop icon path, start menu path
-    :rtype: str, str
+    :return Tuple[str, str]: desktop_path, startmenu_path
     """
     user_folders = get_folders()
     desktop_path, startmenu_path = "", ""
@@ -152,3 +154,19 @@ def delete_shortcut(shortcut_name, desktop=False, startmenu=False):
             os.chmod(desktop_path, stat.S_IWRITE)
             os.remove(desktop_path)
     return desktop_path, startmenu_path
+
+
+def __write_shortcut(dest_path: Path, shortcut_instance: str, file_content: str):
+    """Writes shortcut content to destination.
+
+    :param Path dest_path: Path where write file
+    :param str shortcut_instance: Instance of shortcut that will be used
+    :param str file_content: Content of future icon from DESKTOP_FORM.format(...)
+    """
+    if not dest_path.parent.exists():
+        os.makedirs(str(dest_path))
+    dest = str(dest_path / (shortcut_instance.shortcut_name + scut_ext))
+    with open(dest, "w") as f_out:
+        f_out.write(file_content)
+    st = os.stat(dest)
+    os.chmod(dest, st.st_mode | stat.S_IEXEC)

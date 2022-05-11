@@ -10,6 +10,7 @@ __description__ = (
     "Cross Platform Toolkit for Windows and Linux in order to make "
     "variables and shortcuts easy "
 )
+
 __version__ = "1.6.4"
 __author__ = "Jiri Otoupal"
 __author_email__ = "jiri-otoupal@ips-database.eu"

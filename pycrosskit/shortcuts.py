@@ -5,6 +5,7 @@
 # standard
 import os
 from collections import namedtuple
+from typing import Tuple
 
 # conditional
 if os.name == "nt":
@@ -21,22 +22,24 @@ UserFolders = namedtuple("UserFolders", ("home", "desktop", "startmenu"))
 class Shortcut:
     def __init__(
         self,
-        shortcut_name,
-        exec_path,
-        description="",
-        icon_path="",
-        desktop=False,
-        start_menu=False,
-        work_dir=None,
+        shortcut_name: str,
+        exec_path: str,
+        description: str = "",
+        icon_path: str = "",
+        desktop: bool = False,
+        start_menu: bool = False,
+        work_dir: str = None,
     ):
-        """
+        """Initialize a shortcut object.
 
-        :param shortcut_name: Name of Shortcut that will be created
-        :param exec_path: Path to Executable
-        :param description: Custom Description
-        :param icon_path: Path to icon .ico
-        :param desktop: True to Generate Desktop Shortcut
-        :param start_menu: True to Generate Start Menu Shortcut
+        :param str shortcut_name: Name of Shortcut that will be created
+        :param str exec_path: Path to Executable
+        :param str description: Custom Description, defaults to ""
+        :param str icon_path: Path to icon .ico, defaults to ""
+        :param bool desktop: True to Generate Desktop Shortcut, defaults to False
+        :param bool start_menu: True to Generate Start Menu Shortcut, defaults to False
+        :param str work_dir: _description_, defaults to None
+        
         """
         self.exec_path = str(exec_path)
         self.arguments = "".join(exec_path.split(" ")[1:])
@@ -51,13 +54,16 @@ class Shortcut:
         )
 
     @staticmethod
-    def delete(shortcut_name, desktop=False, start_menu=False):
-        """
-        Delete Shortcut
-        :param shortcut_name: Name of shortcut
-        :param desktop: Delete Shortcut on Desktop
-        :param start_menu: Delete Shortcut on Start Menu
+    def delete(
+        shortcut_name: str, desktop: bool = False, start_menu: bool = False
+    ) -> Tuple[str, str]:
+        """Remove existing Shortcut from the system.
+
+        :param str shortcut_name: Name of shortcut
+        :param bool desktop: Delete Shortcut on Desktop
+        :param bool start_menu: Delete Shortcut on Start Menu
+
         :return: desktop and startmenu path
-        :rtype: str, str
+        :return Tuple[str, str]: desktop_path, startmenu_path
         """
         return delete_shortcut(shortcut_name, desktop, start_menu)
