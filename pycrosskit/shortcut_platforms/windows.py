@@ -10,7 +10,8 @@ from typing import Tuple
 import win32com.client
 from win32comext.shell import shell, shellcon
 
-from pycrosskit.shortcuts import UserFolders, Shortcut
+from pycrosskit.constants import UserFolders
+from pycrosskit.shortcuts import Shortcut
 
 scut_ext = ".lnk"
 ico_ext = ("ico",)
