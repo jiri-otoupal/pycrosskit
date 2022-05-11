@@ -1,22 +1,9 @@
 #! python3  # noqa: E265
 
-# -- IMPORTS
-
-# standard
 import logging
 import os
 
-# conditional
-if os.name == "nt":
-    from pycrosskit.env_platforms.windows import WinVar
 
-    detected_env = WinVar()
-else:
-    from pycrosskit.env_platforms.linux import LinVar
-
-    detected_env = LinVar()
-
-# -- CLASSES
 class SysEnv:
     logger = logging.getLogger("env_vars")
     stdout = logger.info
@@ -48,7 +35,7 @@ class SysEnv:
         if cls.system_env_handler is not None:
             cls.logger.debug(f"Accessed instance of type {os.name}")
             return cls.system_env_handler
-          
+
         if os.name == "nt":
             from pycrosskit.env_platforms.windows import WinVar
 
