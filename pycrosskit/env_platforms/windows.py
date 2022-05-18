@@ -103,7 +103,7 @@ class WinVar:
         try:
             value = cls.__get(key, reg_path, registry)
 
-            cls.logger.debug(f"Got variable {key} {value=}")
+            cls.logger.debug(f"Got variable {key} {value}")
         except VarNotFound as ex:
             if default != VarNotFound:
                 cls.logger.debug(f"Returning default variable {key} not found or empty")
@@ -139,14 +139,14 @@ class WinVar:
                 policy_key = winreg.CreateKey(key_ex, key)
                 winreg.SetValueEx(policy_key, subkey, 0, winreg.REG_SZ, value)
                 root.Close()
-                cls.logger.debug(f"Set variable to registry {key} {value=}")
+                cls.logger.debug(f"Set variable to registry {key} {value}")
             except PermissionError as ex:
                 if not silent:
-                    cls.logger.debug(f"Set variable to registry failed {key} {value=}")
+                    cls.logger.debug(f"Set variable to registry failed {key} {value}")
                     raise ex
                 cls.logger.debug(
-                    f"Set variable to registry failed silently " f"{key} {value=}"
+                    f"Set variable to registry failed silently " f"{key} {value}"
                 )
         else:
             os.system("setx " + str(key) + " " + str(value))
-            cls.logger.debug(f"Set variable {key} {value=}")
+            cls.logger.debug(f"Set variable {key} {value}")

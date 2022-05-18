@@ -59,7 +59,7 @@ class LinVar:
         """
         shell, shell_file = cls.get_shell(shell_file)
 
-        cls.logger.debug(f"Unsetting system variable {key} {shell=} {shell_file=}")
+        cls.logger.debug(f"Unsetting system variable {key} {shell} {shell_file}")
 
         replacement_lines = []
 
@@ -96,7 +96,7 @@ class LinVar:
         """
         shell, shell_file = cls.get_shell(shell, shell_file)
 
-        cls.logger.debug(f"Getting variable {key} {shell=} {shell_file}")
+        cls.logger.debug(f"Getting variable {key} {shell} {shell_file}")
         value: str = subprocess.check_output(
             ["/usr/bin/env", shell, "-ic", f". {shell_file} && echo -n ${key}"],
             stderr=subprocess.DEVNULL,
@@ -112,7 +112,7 @@ class LinVar:
             cls.logger.debug(f"Returning default variable {key} not found or empty")
             return default
 
-        cls.logger.debug(f"Got variable {key} {value=} {shell=} {shell_file}")
+        cls.logger.debug(f"Got variable {key} {value} {shell} {shell_file}")
         return value
 
     @classmethod
@@ -126,4 +126,4 @@ class LinVar:
         shell, shell_file = cls.get_shell(shell_file)
 
         os.system(f"echo '{cls.EXPORT_STRING(key, value)}' >> {shell_file}")
-        cls.logger.debug(f"Set variable {key} {value=} {shell=} {shell_file}")
+        cls.logger.debug(f"Set variable {key} {value} {shell} {shell_file}")
