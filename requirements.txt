@@ -1,5 +1,5 @@
 # dependencies
-pywin32==304; sys_platform == 'win32'
+pywin32==305; sys_platform == 'win32'
 
 # package
 -e .
