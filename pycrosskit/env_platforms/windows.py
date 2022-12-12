@@ -40,7 +40,7 @@ class WinVar:
 
     @classmethod
     def __get_policy_key_readonly(cls, reg_path: str, reg_key: winreg.HKEY_CURRENT_USER):
-
+        
         root = winreg.ConnectRegistry(None, reg_key)
         policy_key = winreg.OpenKeyEx(root, reg_path)
         return policy_key, root
@@ -119,7 +119,7 @@ class WinVar:
             value,
             subkey="",
             reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            reg_key=winreg.HKEY_CURRENT_USER
+            reg_key=winreg.HKEY_CURRENT_USER,
             registry=True,
             silent=False,
     ):
