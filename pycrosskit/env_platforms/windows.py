@@ -39,9 +39,9 @@ class WinVar:
         return value
 
     @classmethod
-    def __get_policy_key_readonly(cls, reg_path: str):
+    def __get_policy_key_readonly(cls, reg_path: str, reg_key: winreg.HKEY_CURRENT_USER):
 
-        root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+        root = winreg.ConnectRegistry(None, reg_key)
         policy_key = winreg.OpenKeyEx(root, reg_path)
         return policy_key, root
 
@@ -119,6 +119,7 @@ class WinVar:
             value,
             subkey="",
             reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            reg_key=winreg.HKEY_CURRENT_USER
             registry=True,
             silent=False,
     ):
@@ -133,7 +134,7 @@ class WinVar:
                 if false, variable is set to environment variables
         """
         if registry:
-            root = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            root = winreg.ConnectRegistry(None, reg_key)
             key_ex = winreg.OpenKeyEx(root, reg_path, winreg.KEY_SET_VALUE)
             try:
                 policy_key = winreg.CreateKey(key_ex, key)
