@@ -32,15 +32,16 @@ class WinVar:
         else:
             value = (
                 str(subprocess.check_output("echo %" + key + "%", shell=True), "utf-8")
-                    .replace("\r\n", "")
-                    .replace("%", "")
+                .replace("\r\n", "")
+                .replace("%", "")
             )
 
         return value
 
     @classmethod
-    def __get_policy_key_readonly(cls, reg_path: str, reg_key: winreg.HKEY_CURRENT_USER):
-        
+    def __get_policy_key_readonly(
+        cls, reg_path: str, reg_key: winreg.HKEY_CURRENT_USER
+    ):
         root = winreg.ConnectRegistry(None, reg_key)
         policy_key = winreg.OpenKeyEx(root, reg_path)
         return policy_key, root
@@ -56,11 +57,11 @@ class WinVar:
 
     @classmethod
     def unset(
-            cls,
-            key,
-            reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            registry=True,
-            silent=False,
+        cls,
+        key,
+        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        registry=True,
+        silent=False,
     ):
         """
         Unsets variable from environment or registry
@@ -83,11 +84,11 @@ class WinVar:
 
     @classmethod
     def get(
-            cls,
-            key: str,
-            default: Union[Any, VarNotFound] = VarNotFound,
-            reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            registry: bool = True,
+        cls,
+        key: str,
+        default: Union[Any, VarNotFound] = VarNotFound,
+        reg_path: str = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        registry: bool = True,
     ) -> str:
         """
         Get Environment Variable
@@ -114,14 +115,14 @@ class WinVar:
 
     @classmethod
     def set(
-            cls,
-            key,
-            value,
-            subkey="",
-            reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-            reg_key=winreg.HKEY_CURRENT_USER,
-            registry=True,
-            silent=False,
+        cls,
+        key,
+        value,
+        subkey="",
+        reg_path=r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        reg_key=winreg.HKEY_CURRENT_USER,
+        registry=True,
+        silent=False,
     ):
         """
         Set Environment Variable
