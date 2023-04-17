@@ -11,7 +11,7 @@ __description__ = (
     "variables and shortcuts easy "
 )
 
-__version__ = "1.6.9"
+__version__ = "1.7.0"
 __author__ = "Jiri Otoupal"
 __author_email__ = "jiri-otoupal@ips-database.eu"
 __license__ = "Apache 2.0"
