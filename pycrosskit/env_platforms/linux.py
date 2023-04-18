@@ -1,14 +1,14 @@
 import logging
 import os
 import subprocess
-from typing import Union, Any, Tuple
+from typing import Union, Any
 
 from pycrosskit.env_platforms.exceptions import VarNotFound
 
 
 class LinVar:
-    shell = "bash"
-    shell_file = "~/.bashrc"
+    _shell = "bash"
+    _shell_file = "~/.bashrc"
     logger: logging.Logger = None
 
     EXPORT_STRING = lambda key, value: f'export {key}="{value}"'
@@ -22,7 +22,6 @@ class LinVar:
         """
         Generator that fetches bashrc lines one by one
         """
-        _, shell_file = cls.get_shell(shell_file)
 
         with open(os.path.expanduser(shell_file), "r") as f:
             line = True
@@ -30,23 +29,6 @@ class LinVar:
                 line = f.readline()
                 yield line
 
-    @classmethod
-    def get_shell(
-            cls, shell: str = "bash", shell_file: str = "~/.bashrc"
-    ) -> Tuple[str, str]:
-        """
-        Get Shell that is used for every access
-        :param shell: Shell binary name
-        :param shell_file: Shell file path
-        :return: shell binary name, shell file path
-        """
-        if cls.shell_file != "~/.bashrc":
-            shell_file = cls.shell_file
-
-        if cls.shell != "bash":
-            shell = cls.shell
-
-        return shell, shell_file
 
     @classmethod
     def unset(cls, key: str, shell_file="~/.bashrc"):
@@ -57,9 +39,8 @@ class LinVar:
 
         Can throw PermissionError if bashrc is not accessible
         """
-        shell, shell_file = cls.get_shell(shell_file)
 
-        cls.logger.debug(f"Unsetting system variable {key} {shell} {shell_file}")
+        cls.logger.debug(f"Unsetting system variable {key} {shell_file}")
 
         replacement_lines = []
 
@@ -94,7 +75,6 @@ class LinVar:
         :param default: Returned if variable empty or undefined
         :return:
         """
-        shell, shell_file = cls.get_shell(shell, shell_file)
 
         cls.logger.debug(f"Getting variable {key} {shell} {shell_file}")
         value: str = subprocess.check_output(
@@ -123,7 +103,6 @@ class LinVar:
         :param key: Key of variable
         :param value: Value to be set
         """
-        shell, shell_file = cls.get_shell(shell_file)
 
         os.system(f"echo '{cls.EXPORT_STRING(key, value)}' >> {shell_file}")
-        cls.logger.debug(f"Set variable {key} {value} {shell} {shell_file}")
+        cls.logger.debug(f"Set variable {key} {value} {shell_file}")
