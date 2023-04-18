@@ -66,7 +66,7 @@ def get_desktop() -> str:
         for line in text:
             if "DESKTOP" in line:
                 line = line.replace("$HOME", homedir)[:-1]
-                key, val = line.split("=")
+                _, val = line.split("=")
                 val = val.replace('"', "").replace("'", "")
         desktop = val
     return desktop
@@ -157,7 +157,7 @@ def delete_shortcut(shortcut_name, desktop: bool = False, startmenu: bool = Fals
     return desktop_path, startmenu_path
 
 
-def __write_shortcut(dest_path: Path, shortcut_instance: str, file_content: str):
+def __write_shortcut(dest_path: Path, shortcut_instance: Shortcut, file_content: str):
     """Writes shortcut content to destination.
 
     :param Path dest_path: Path where write file
