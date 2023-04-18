@@ -25,11 +25,11 @@ class SysEnv:
         :param shell:
         :param shell_file:
         """
-        if cls.system_env_handler._shell == "batch":
+        if cls.system_env_handler.shell == "batch":
             cls.logger.warning("Trying to change shell of windows machine")
 
-        cls.system_env_handler._shell = shell
-        cls.system_env_handler._shell_file = shell_file
+        cls.system_env_handler.shell = shell
+        cls.system_env_handler.shell_file = shell_file
 
     def __new__(cls, *args, **kwargs):
         if cls.system_env_handler is not None:
