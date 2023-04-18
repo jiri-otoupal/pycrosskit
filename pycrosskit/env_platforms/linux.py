@@ -28,7 +28,6 @@ class LinVar:
                 line = f.readline()
                 yield line
 
-
     @classmethod
     def unset(cls, key: str, shell_file="~/.bashrc"):
         """
