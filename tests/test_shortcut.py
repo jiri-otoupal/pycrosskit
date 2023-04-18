@@ -10,7 +10,7 @@ class Test_Shortcuts(unittest.TestCase):
         self.assertEqual(True, os.path.exists(sh.desktop_path))
 
     def test_delete_desktop(self):
-        desktop, startmenu = Shortcut.delete("Test", desktop=True)
+        desktop, _ = Shortcut.delete("Test", desktop=True)
         self.assertEqual(True, not os.path.exists(desktop))
 
     def test_create_startmenu(self):
@@ -18,7 +18,7 @@ class Test_Shortcuts(unittest.TestCase):
         self.assertEqual(True, os.path.exists(sh.startmenu_path))
 
     def test_delete_startmenu(self):
-        desktop, startmenu = Shortcut.delete("Test", start_menu=True)
+        _, startmenu = Shortcut.delete("Test", start_menu=True)
         self.assertEqual(True, not os.path.exists(startmenu))
 
     def test_create_both(self):
