@@ -22,7 +22,6 @@ class LinVar:
         """
         Generator that fetches bashrc lines one by one
         """
-
         with open(os.path.expanduser(shell_file), "r") as f:
             line = True
             while line:
@@ -39,7 +38,6 @@ class LinVar:
 
         Can throw PermissionError if bashrc is not accessible
         """
-
         cls.logger.debug(f"Unsetting system variable {key} {shell_file}")
 
         replacement_lines = []
@@ -75,7 +73,6 @@ class LinVar:
         :param default: Returned if variable empty or undefined
         :return:
         """
-
         cls.logger.debug(f"Getting variable {key} {shell} {shell_file}")
         value: str = subprocess.check_output(
             ["/usr/bin/env", shell, "-ic", f". {shell_file} && echo -n ${key}"],
@@ -103,6 +100,5 @@ class LinVar:
         :param key: Key of variable
         :param value: Value to be set
         """
-
         os.system(f"echo '{cls.EXPORT_STRING(key, value)}' >> {shell_file}")
         cls.logger.debug(f"Set variable {key} {value} {shell_file}")
