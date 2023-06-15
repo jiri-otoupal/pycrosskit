@@ -47,7 +47,7 @@ class Shortcut:
 
         # create shortcut
         self.desktop_path, self.startmenu_path = create_shortcut(
-            self, start_menu, desktop
+            self, startmenu=start_menu, desktop=desktop
         )
 
     @staticmethod
@@ -68,4 +68,4 @@ class Shortcut:
         else:
             from pycrosskit.shortcut_platforms.linux import delete_shortcut
 
-        return delete_shortcut(shortcut_name, desktop, start_menu)
+        return delete_shortcut(shortcut_name, desktop=desktop, startmenu=start_menu)
