@@ -5,7 +5,7 @@ import os
 import re
 from typing import Tuple
 
-from pycrosskit.constants import ParseArgumentsPattern
+from pycrosskit.constants import parse_arguments_pattern
 
 # conditional
 
@@ -33,7 +33,7 @@ class Shortcut:
 
         """
         self.exec_path, self.arguments = re.match(
-            ParseArgumentsPattern, str(exec_path)
+            parse_arguments_pattern, str(exec_path)
         ).group(1, 2)
         self.shortcut_name = shortcut_name
         self.description = description

@@ -7,7 +7,7 @@ import stat
 from pathlib import Path
 from typing import Tuple
 
-from pycrosskit.constants import UserFolders
+from pycrosskit.constants import user_folders
 from pycrosskit.shortcuts import Shortcut
 
 scut_ext = ".desktop"
@@ -81,16 +81,16 @@ def get_startmenu() -> str:
     return os.path.join(homedir, ".local", "share", "applications")
 
 
-def get_folders() -> UserFolders:
+def get_folders() -> user_folders:
     """Get user folders.
 
     :return UserFolders: user folders named tuple
     """
-    return UserFolders(get_homedir(), get_desktop(), get_startmenu())
+    return user_folders(get_homedir(), get_desktop(), get_startmenu())
 
 
 def create_shortcut(
-        shortcut_instance: Shortcut, desktop: bool = False, startmenu: bool = False
+    shortcut_instance: Shortcut, desktop: bool = False, startmenu: bool = False
 ):
     """Creates shortcut on the system.
 
@@ -115,8 +115,8 @@ def create_shortcut(
             name=shortcut_instance.shortcut_name,
             desc=shortcut_instance.description,
             exe=f"bash -c "
-                f"'cd {shortcut_instance.work_path}"
-                f" && {shortcut_instance.exec_path}'",
+            f"'cd {shortcut_instance.work_path}"
+            f" && {shortcut_instance.exec_path}'",
             icon=shortcut_instance.icon_path,
             args=shortcut_instance.arguments,
         )
