@@ -8,7 +8,8 @@ class Test_Shortcuts(unittest.TestCase):
     def test_exec_args_splitting(self):
         """
         Tests to make sure the target file
-        and arguments are split correctly"""
+        and arguments are split correctly
+        """
         sh = Shortcut(
             "SplitTest",
             "\"file name with spaces.py\" --and --args 'with options.txt'",
