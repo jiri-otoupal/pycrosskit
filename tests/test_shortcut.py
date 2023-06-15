@@ -5,6 +5,17 @@ from pycrosskit.shortcuts import Shortcut
 
 
 class Test_Shortcuts(unittest.TestCase):
+    def test_exec_args_splitting(self):
+        sh = Shortcut(
+            "SplitTest",
+            "file name with spaces.py --and --args 'with options.txt'",
+            desktop=True,
+        )
+        self.assertEqual("file name with spaces.py", sh.exec_path)
+        self.assertEqual("--and --args 'with options.txt'", sh.arguments)
+
+        desktop, _ = Shortcut.delete("SplitTest", desktop=True)
+
     def test_create_desktop(self):
         sh = Shortcut("Test", "__init__.py", desktop=True)
         self.assertEqual(True, os.path.exists(sh.desktop_path))
