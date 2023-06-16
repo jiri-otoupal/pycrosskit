@@ -27,7 +27,7 @@ setup(
     url=about["__url__"],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.6,<4",
+    python_requires=">=3.7,<4",
     install_requires=["pywin32>=300; sys_platform == 'win32'"],
     extras_require={
         "dev": ["black>=22,<24", "flake8<6.1", "pre-commit<3.3", "pytest<7.4"],
@@ -40,7 +40,6 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
