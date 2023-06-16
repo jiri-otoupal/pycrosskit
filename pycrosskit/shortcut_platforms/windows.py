@@ -10,7 +10,7 @@ from typing import Tuple
 import win32com.client
 from win32comext.shell import shell, shellcon
 
-from pycrosskit.constants import user_folders
+from pycrosskit.constants import default_user_folders
 from pycrosskit.shortcuts import Shortcut
 
 scut_ext = ".lnk"
@@ -58,12 +58,12 @@ def get_startmenu() -> str:
     return shell.SHGetFolderPath(0, shellcon.CSIDL_PROGRAMS, None, 0)
 
 
-def get_folders() -> user_folders:
+def get_folders() -> default_user_folders:
     """Get user folders.
 
     :return UserFolders: user folders named tuple
     """
-    return user_folders(get_homedir(), get_desktop(), get_startmenu())
+    return default_user_folders(get_homedir(), get_desktop(), get_startmenu())
 
 
 def create_shortcut(
