@@ -30,7 +30,7 @@ setup(
     python_requires=">=3.7,<4",
     install_requires=["pywin32>=300; sys_platform == 'win32'"],
     extras_require={
-        "dev": ["black>=22,<24", "flake8<6.1", "pre-commit<3.3", "pytest<7.5"],
+        "dev": ["black>=22,<24", "flake8<6.1", "pre-commit<3.5", "pytest<7.5"],
     },
     license=about["__license__"],
     zip_safe=True,
