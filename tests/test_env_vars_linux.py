@@ -29,10 +29,8 @@ class TestEnvVars(unittest.TestCase):
 
         try:
             SysEnv().get("test")
-            self.fail()
-        except Exception:
+        except KeyError:
             pass
-
 
 if __name__ == "__main__":
     if os.name != "nt":
